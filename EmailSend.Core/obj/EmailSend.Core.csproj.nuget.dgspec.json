@@ -1,0 +1,77 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\Build project\\Server\\BHC-Server\\EmailSend.Core\\EmailSend.Core.csproj": {}
+  },
+  "projects": {
+    "D:\\Build project\\Server\\BHC-Server\\EmailSend.Core\\EmailSend.Core.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Build project\\Server\\BHC-Server\\EmailSend.Core\\EmailSend.Core.csproj",
+        "projectName": "EmailSend.Core",
+        "projectPath": "D:\\Build project\\Server\\BHC-Server\\EmailSend.Core\\EmailSend.Core.csproj",
+        "packagesPath": "C:\\Users\\Tu Nguyen\\.nuget\\packages\\",
+        "outputPath": "D:\\Build project\\Server\\BHC-Server\\EmailSend.Core\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Tu Nguyen\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Mailjet.Api": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
+            "Mailjet.Apis": {
+              "target": "Package",
+              "version": "[1.0.6, )"
+            },
+            "Microsoft.Extensions.Hosting.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

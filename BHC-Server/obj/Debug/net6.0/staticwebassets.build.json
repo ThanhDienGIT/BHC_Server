@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "9sDzIDBA0jdNt+OnRgWPrdz+BH85xzjqI/OhHJaXSDQ=",
+  "Source": "BHC-Server",
+  "BasePath": "_content/BHC-Server",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

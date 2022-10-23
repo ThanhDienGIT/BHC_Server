@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "dPnEWBwHc4RUN32C55jnnDQMF0+mP6e2xlDNacdf+cE=",
+  "Source": "EmailService.Core",
+  "BasePath": "_content/EmailService.Core",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

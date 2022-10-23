@@ -1,0 +1,12 @@
+D:\Build project\Server\BHC-Server\EmailSend.Core\bin\Debug\net6.0\EmailSend.Core.deps.json
+D:\Build project\Server\BHC-Server\EmailSend.Core\bin\Debug\net6.0\EmailSend.Core.dll
+D:\Build project\Server\BHC-Server\EmailSend.Core\bin\Debug\net6.0\EmailSend.Core.pdb
+D:\Build project\Server\BHC-Server\EmailSend.Core\obj\Debug\net6.0\EmailSend.Core.csproj.AssemblyReference.cache
+D:\Build project\Server\BHC-Server\EmailSend.Core\obj\Debug\net6.0\EmailSend.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\Build project\Server\BHC-Server\EmailSend.Core\obj\Debug\net6.0\EmailSend.Core.AssemblyInfoInputs.cache
+D:\Build project\Server\BHC-Server\EmailSend.Core\obj\Debug\net6.0\EmailSend.Core.AssemblyInfo.cs
+D:\Build project\Server\BHC-Server\EmailSend.Core\obj\Debug\net6.0\EmailSend.Core.csproj.CoreCompileInputs.cache
+D:\Build project\Server\BHC-Server\EmailSend.Core\obj\Debug\net6.0\EmailSend.Core.dll
+D:\Build project\Server\BHC-Server\EmailSend.Core\obj\Debug\net6.0\refint\EmailSend.Core.dll
+D:\Build project\Server\BHC-Server\EmailSend.Core\obj\Debug\net6.0\EmailSend.Core.pdb
+D:\Build project\Server\BHC-Server\EmailSend.Core\obj\Debug\net6.0\ref\EmailSend.Core.dll
