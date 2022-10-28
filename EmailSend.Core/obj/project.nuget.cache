@@ -1,11 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "IPtqGS3q4J70XIms/6jTd7tzhBraEQVnrOUhqVcFEBJErKPBTtvDiJI8K7KKyQL2u0DbWX0yFL7AMlmy76uuEQ==",
+  "dgSpecHash": "uF5zX+StcZMgMh6E6cx82LujWCGfVNjG5kPEUEqGseERxfQ+i+1zyXJTVGZDGh0VDKeLqna05ZEPLnw/cWfzzw==",
   "success": true,
   "projectFilePath": "D:\\Build project\\Server\\BHC-Server\\EmailSend.Core\\EmailSend.Core.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Tu Nguyen\\.nuget\\packages\\mailjet.api\\3.0.0\\mailjet.api.3.0.0.nupkg.sha512",
     "C:\\Users\\Tu Nguyen\\.nuget\\packages\\mailjet.apis\\1.0.6\\mailjet.apis.1.0.6.nupkg.sha512",
+    "C:\\Users\\Tu Nguyen\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\6.0.10\\microsoft.aspnetcore.jsonpatch.6.0.10.nupkg.sha512",
+    "C:\\Users\\Tu Nguyen\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\6.0.10\\microsoft.aspnetcore.mvc.newtonsoftjson.6.0.10.nupkg.sha512",
+    "C:\\Users\\Tu Nguyen\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\Tu Nguyen\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\2.2.0\\microsoft.extensions.configuration.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\Tu Nguyen\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\2.2.0\\microsoft.extensions.dependencyinjection.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\Tu Nguyen\\.nuget\\packages\\microsoft.extensions.fileproviders.abstractions\\2.2.0\\microsoft.extensions.fileproviders.abstractions.2.2.0.nupkg.sha512",
@@ -17,6 +20,7 @@
     "C:\\Users\\Tu Nguyen\\.nuget\\packages\\microsoft.win32.primitives\\4.3.0\\microsoft.win32.primitives.4.3.0.nupkg.sha512",
     "C:\\Users\\Tu Nguyen\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
     "C:\\Users\\Tu Nguyen\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\Tu Nguyen\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512",
     "C:\\Users\\Tu Nguyen\\.nuget\\packages\\openssl.privatekeydecoder\\1.2.0\\openssl.privatekeydecoder.1.2.0.nupkg.sha512",
     "C:\\Users\\Tu Nguyen\\.nuget\\packages\\openssl.x509certificate2.provider\\1.2.0\\openssl.x509certificate2.provider.1.2.0.nupkg.sha512",
     "C:\\Users\\Tu Nguyen\\.nuget\\packages\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",

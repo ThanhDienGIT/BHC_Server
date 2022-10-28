@@ -43,11 +43,7 @@ namespace BHC_Server.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=DB_BHC;Trusted_Connection=True;");
-            }
+           
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -55,17 +51,17 @@ namespace BHC_Server.Models
             modelBuilder.Entity<BacSi>(entity =>
             {
                 entity.HasKey(e => e.IdbacSi)
-                    .HasName("PK__BacSi__32D03F8433FBF916");
+                    .HasName("PK__BacSi__32D03F84C7EFB4BA");
 
                 entity.ToTable("BacSi");
 
-                entity.HasIndex(e => e.SoDienThoaiBacSi, "UQ__BacSi__2C67339D47895888")
+                entity.HasIndex(e => e.SoDienThoaiBacSi, "UQ__BacSi__2C67339D0ECF7CE6")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Cccd, "UQ__BacSi__A955A0AA6A2F12B5")
+                entity.HasIndex(e => e.Cccd, "UQ__BacSi__A955A0AA31283DE8")
                     .IsUnique();
 
-                entity.HasIndex(e => e.EmailBacSi, "UQ__BacSi__A9B055F1906E3C51")
+                entity.HasIndex(e => e.EmailBacSi, "UQ__BacSi__A9B055F17AD1E309")
                     .IsUnique();
 
                 entity.Property(e => e.IdbacSi)
@@ -137,7 +133,7 @@ namespace BHC_Server.Models
             modelBuilder.Entity<ChiTietDatHang>(entity =>
             {
                 entity.HasKey(e => e.IdchiTietDatHang)
-                    .HasName("PK__ChiTietD__279D92CA2BFF65AC");
+                    .HasName("PK__ChiTietD__279D92CAE3BB8B00");
 
                 entity.ToTable("ChiTietDatHang");
 
@@ -163,11 +159,11 @@ namespace BHC_Server.Models
             modelBuilder.Entity<ChucDanh>(entity =>
             {
                 entity.HasKey(e => e.IdchucDanh)
-                    .HasName("PK__ChucDanh__BF5D15EC35C40F9B");
+                    .HasName("PK__ChucDanh__BF5D15EC73FF4B36");
 
                 entity.ToTable("ChucDanh");
 
-                entity.HasIndex(e => e.TenChucDanh, "UQ__ChucDanh__BAAFE7156E9EDB71")
+                entity.HasIndex(e => e.TenChucDanh, "UQ__ChucDanh__BAAFE7150BDF9B40")
                     .IsUnique();
 
                 entity.Property(e => e.IdchucDanh).HasColumnName("IDChucDanh");
@@ -178,7 +174,7 @@ namespace BHC_Server.Models
             modelBuilder.Entity<ChucDanhBacSi>(entity =>
             {
                 entity.HasKey(e => e.IdChucDanhBacSi)
-                    .HasName("PK__ChucDanh__17DA8846F01E009C");
+                    .HasName("PK__ChucDanh__17DA88461E630156");
 
                 entity.ToTable("ChucDanhBacSi");
 
@@ -203,11 +199,11 @@ namespace BHC_Server.Models
             modelBuilder.Entity<ChuyenKhoa>(entity =>
             {
                 entity.HasKey(e => e.IdchuyenKhoa)
-                    .HasName("PK__ChuyenKh__8929FBE566A43392");
+                    .HasName("PK__ChuyenKh__8929FBE5CD153447");
 
                 entity.ToTable("ChuyenKhoa");
 
-                entity.HasIndex(e => e.TenChuyenKhoa, "UQ__ChuyenKh__E7F9B928DB3FF685")
+                entity.HasIndex(e => e.TenChuyenKhoa, "UQ__ChuyenKh__E7F9B928956CFFC3")
                     .IsUnique();
 
                 entity.Property(e => e.IdchuyenKhoa).HasColumnName("IDChuyenKhoa");
@@ -226,7 +222,7 @@ namespace BHC_Server.Models
                         r => r.HasOne<ChuyenKhoa>().WithMany().HasForeignKey("IdchuyenKhoa").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__ChuyenKho__IDChu__5441852A"),
                         j =>
                         {
-                            j.HasKey("IdchuyenKhoa", "IdphongKham").HasName("PK__ChuyenKh__3A035895EABF8299");
+                            j.HasKey("IdchuyenKhoa", "IdphongKham").HasName("PK__ChuyenKh__3A0358955DAEB17B");
 
                             j.ToTable("ChuyenKhoaPhongKham");
 
@@ -239,11 +235,11 @@ namespace BHC_Server.Models
             modelBuilder.Entity<DanhMucSanPham>(entity =>
             {
                 entity.HasKey(e => e.IddanhMucSanPham)
-                    .HasName("PK__DanhMucS__3E7D2E36344A109C");
+                    .HasName("PK__DanhMucS__3E7D2E36528BB2D8");
 
                 entity.ToTable("DanhMucSanPham");
 
-                entity.HasIndex(e => e.TenDanhMuc, "UQ__DanhMucS__650CAE4E65A1229F")
+                entity.HasIndex(e => e.TenDanhMuc, "UQ__DanhMucS__650CAE4E809E5AFA")
                     .IsUnique();
 
                 entity.Property(e => e.IddanhMucSanPham).HasColumnName("IDDanhMucSanPham");
@@ -254,7 +250,7 @@ namespace BHC_Server.Models
             modelBuilder.Entity<DatLich>(entity =>
             {
                 entity.HasKey(e => e.IddatLich)
-                    .HasName("PK__DatLich__CE66721C909D2AA4");
+                    .HasName("PK__DatLich__CE66721C0BA74324");
 
                 entity.ToTable("DatLich");
 
@@ -262,11 +258,13 @@ namespace BHC_Server.Models
 
                 entity.Property(e => e.IdkeHoachKham).HasColumnName("IDKeHoachKham");
 
+                entity.Property(e => e.SoLuongHienTai).HasDefaultValueSql("((0))");
+
                 entity.Property(e => e.ThoiGianDatLich)
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.TrangThai).HasDefaultValueSql("((1))");
+                entity.Property(e => e.TrangThaiDatLich).HasDefaultValueSql("((1))");
 
                 entity.HasOne(d => d.IdkeHoachKhamNavigation)
                     .WithMany(p => p.DatLiches)
@@ -277,7 +275,7 @@ namespace BHC_Server.Models
             modelBuilder.Entity<DonHang>(entity =>
             {
                 entity.HasKey(e => e.IddonHang)
-                    .HasName("PK__DonHang__9CA232F71139D42E");
+                    .HasName("PK__DonHang__9CA232F778F5A7E9");
 
                 entity.ToTable("DonHang");
 
@@ -312,7 +310,7 @@ namespace BHC_Server.Models
             modelBuilder.Entity<DonViBan>(entity =>
             {
                 entity.HasKey(e => e.IddonViBan)
-                    .HasName("PK__DonViBan__112EE94A349746DF");
+                    .HasName("PK__DonViBan__112EE94AAC29E768");
 
                 entity.ToTable("DonViBan");
 
@@ -332,7 +330,7 @@ namespace BHC_Server.Models
             modelBuilder.Entity<KeHoachKham>(entity =>
             {
                 entity.HasKey(e => e.IdkeHoachKham)
-                    .HasName("PK__KeHoachK__131205896D488534");
+                    .HasName("PK__KeHoachK__13120589297D1F1F");
 
                 entity.ToTable("KeHoachKham");
 
@@ -345,7 +343,7 @@ namespace BHC_Server.Models
 
                 entity.Property(e => e.NgayDatLich).HasColumnType("date");
 
-                entity.Property(e => e.TrangThai).HasDefaultValueSql("((1))");
+                entity.Property(e => e.TrangThaiKeHoachKham).HasDefaultValueSql("((1))");
 
                 entity.HasOne(d => d.IdbacSiNavigation)
                     .WithMany(p => p.KeHoachKhams)
@@ -356,11 +354,11 @@ namespace BHC_Server.Models
             modelBuilder.Entity<LoaiHinhDichVu>(entity =>
             {
                 entity.HasKey(e => e.IdLoaiHinhDichVu)
-                    .HasName("PK__LoaiHinh__73E1A76AC4703573");
+                    .HasName("PK__LoaiHinh__73E1A76AED5A9DCF");
 
                 entity.ToTable("LoaiHinhDichVu");
 
-                entity.HasIndex(e => e.TenLoaiHinhDichVu, "UQ__LoaiHinh__83E3BF1D00E5AA7E")
+                entity.HasIndex(e => e.TenLoaiHinhDichVu, "UQ__LoaiHinh__83E3BF1D91B742D4")
                     .IsUnique();
 
                 entity.Property(e => e.IdLoaiHinhDichVu).HasColumnName("idLoaiHinhDichVu");
@@ -371,11 +369,11 @@ namespace BHC_Server.Models
             modelBuilder.Entity<LoaiSanPham>(entity =>
             {
                 entity.HasKey(e => e.IdloaiSanPham)
-                    .HasName("PK__LoaiSanP__6CB987C5B9C383D4");
+                    .HasName("PK__LoaiSanP__6CB987C5091A922D");
 
                 entity.ToTable("LoaiSanPham");
 
-                entity.HasIndex(e => e.TenLoaiSanPham, "UQ__LoaiSanP__FD39E605BF88D92E")
+                entity.HasIndex(e => e.TenLoaiSanPham, "UQ__LoaiSanP__FD39E605FFA0A88F")
                     .IsUnique();
 
                 entity.Property(e => e.IdloaiSanPham).HasColumnName("IDLoaiSanPham");
@@ -393,17 +391,17 @@ namespace BHC_Server.Models
             modelBuilder.Entity<NguoiDung>(entity =>
             {
                 entity.HasKey(e => e.IdNguoiDung)
-                    .HasName("PK__NguoiDun__BE010FC931F6FF89");
+                    .HasName("PK__NguoiDun__BE010FC97BEE6796");
 
                 entity.ToTable("NguoiDung");
 
-                entity.HasIndex(e => e.SoDienThoai, "UQ__NguoiDun__0389B7BDFC302054")
+                entity.HasIndex(e => e.SoDienThoai, "UQ__NguoiDun__0389B7BD07DF1DA8")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Email, "UQ__NguoiDun__A9D10534F23E851B")
+                entity.HasIndex(e => e.Email, "UQ__NguoiDun__A9D10534090DCC83")
                     .IsUnique();
 
-                entity.HasIndex(e => e.TaiKhoan, "UQ__NguoiDun__D5B8C7F0AB7E3E04")
+                entity.HasIndex(e => e.TaiKhoan, "UQ__NguoiDun__D5B8C7F0E113832A")
                     .IsUnique();
 
                 entity.Property(e => e.IdNguoiDung).HasColumnName("idNguoiDung");
@@ -474,11 +472,11 @@ namespace BHC_Server.Models
             modelBuilder.Entity<NhaThuoc>(entity =>
             {
                 entity.HasKey(e => e.IdNhaThuoc)
-                    .HasName("PK__NhaThuoc__6C21C36033467B56");
+                    .HasName("PK__NhaThuoc__6C21C360D000334C");
 
                 entity.ToTable("NhaThuoc");
 
-                entity.HasIndex(e => e.TenNhaThuoc, "UQ__NhaThuoc__744A527348D12C14")
+                entity.HasIndex(e => e.TenNhaThuoc, "UQ__NhaThuoc__744A5273BD7DE9AB")
                     .IsUnique();
 
                 entity.Property(e => e.IdNhaThuoc)
@@ -525,17 +523,17 @@ namespace BHC_Server.Models
             modelBuilder.Entity<NhanVienNhaThuoc>(entity =>
             {
                 entity.HasKey(e => e.IdnhanVienNhaThuoc)
-                    .HasName("PK__NhanVien__9FD1BD30524F4D49");
+                    .HasName("PK__NhanVien__9FD1BD3064E8DED8");
 
                 entity.ToTable("NhanVienNhaThuoc");
 
-                entity.HasIndex(e => e.EmailNhanvien, "UQ__NhanVien__4DEE8FFC608B62AC")
+                entity.HasIndex(e => e.EmailNhanvien, "UQ__NhanVien__4DEE8FFCBFD4F295")
                     .IsUnique();
 
-                entity.HasIndex(e => e.SdtnhanVien, "UQ__NhanVien__7542FE02F664CAFF")
+                entity.HasIndex(e => e.SdtnhanVien, "UQ__NhanVien__7542FE0276D8E713")
                     .IsUnique();
 
-                entity.HasIndex(e => e.TaiKhoan, "UQ__NhanVien__D5B8C7F0E0CEC9A1")
+                entity.HasIndex(e => e.TaiKhoan, "UQ__NhanVien__D5B8C7F0CE0B9AD0")
                     .IsUnique();
 
                 entity.Property(e => e.IdnhanVienNhaThuoc)
@@ -587,7 +585,7 @@ namespace BHC_Server.Models
             modelBuilder.Entity<PhanLoaiBacSiChuyenKhoa>(entity =>
             {
                 entity.HasKey(e => e.IdphanLoaiBacSiChuyenKhoa)
-                    .HasName("PK__PhanLoai__ABD2E476FDCA17EF");
+                    .HasName("PK__PhanLoai__ABD2E47624A0D1C4");
 
                 entity.ToTable("PhanLoaiBacSiChuyenKhoa");
 
@@ -614,11 +612,11 @@ namespace BHC_Server.Models
             modelBuilder.Entity<PhongKham>(entity =>
             {
                 entity.HasKey(e => e.IdphongKham)
-                    .HasName("PK__PhongKha__32AA370A1471B12D");
+                    .HasName("PK__PhongKha__32AA370A2EF50F19");
 
                 entity.ToTable("PhongKham");
 
-                entity.HasIndex(e => e.TenPhongKham, "UQ__PhongKha__013DD7AA269F05F2")
+                entity.HasIndex(e => e.TenPhongKham, "UQ__PhongKha__013DD7AA1147E65D")
                     .IsUnique();
 
                 entity.Property(e => e.IdphongKham)
@@ -661,11 +659,11 @@ namespace BHC_Server.Models
             modelBuilder.Entity<QuanHuyen>(entity =>
             {
                 entity.HasKey(e => e.IdquanHuyen)
-                    .HasName("PK__QuanHuye__29AC36EEAE1B75CD");
+                    .HasName("PK__QuanHuye__29AC36EECF19A568");
 
                 entity.ToTable("QuanHuyen");
 
-                entity.HasIndex(e => e.TenQuanHuyen, "UQ__QuanHuye__7A15A2B851761CCE")
+                entity.HasIndex(e => e.TenQuanHuyen, "UQ__QuanHuye__7A15A2B81C22EAAB")
                     .IsUnique();
 
                 entity.Property(e => e.IdquanHuyen).HasColumnName("IDQuanHuyen");
@@ -676,17 +674,17 @@ namespace BHC_Server.Models
             modelBuilder.Entity<QuanTriVien>(entity =>
             {
                 entity.HasKey(e => e.IdquanTriVien)
-                    .HasName("PK__QuanTriV__C7DEE233BC93D095");
+                    .HasName("PK__QuanTriV__C7DEE233BEEFF1A5");
 
                 entity.ToTable("QuanTriVien");
 
-                entity.HasIndex(e => e.SoDienThoai, "UQ__QuanTriV__0389B7BDB25B7A14")
+                entity.HasIndex(e => e.SoDienThoai, "UQ__QuanTriV__0389B7BDC2E66B6A")
                     .IsUnique();
 
-                entity.HasIndex(e => e.TaiKhoanQtv, "UQ__QuanTriV__630AB4F30F7CF861")
+                entity.HasIndex(e => e.TaiKhoanQtv, "UQ__QuanTriV__630AB4F3116F556D")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Email, "UQ__QuanTriV__A9D1053475B4C24B")
+                entity.HasIndex(e => e.Email, "UQ__QuanTriV__A9D105346F3CC98E")
                     .IsUnique();
 
                 entity.Property(e => e.IdquanTriVien).HasColumnName("IDQuanTriVien");
@@ -734,11 +732,11 @@ namespace BHC_Server.Models
             modelBuilder.Entity<Quyen>(entity =>
             {
                 entity.HasKey(e => e.Idquyen)
-                    .HasName("PK__Quyen__FB764FA157C9AF37");
+                    .HasName("PK__Quyen__FB764FA1CD784E97");
 
                 entity.ToTable("Quyen");
 
-                entity.HasIndex(e => e.TenQuyen, "UQ__Quyen__5637EE795FBFB2A0")
+                entity.HasIndex(e => e.TenQuyen, "UQ__Quyen__5637EE79FE0AC7A1")
                     .IsUnique();
 
                 entity.Property(e => e.Idquyen).HasColumnName("IDquyen");
@@ -749,11 +747,11 @@ namespace BHC_Server.Models
             modelBuilder.Entity<SanPham>(entity =>
             {
                 entity.HasKey(e => e.IdsanPham)
-                    .HasName("PK__SanPham__9D45E58A0E6C7A3C");
+                    .HasName("PK__SanPham__9D45E58A5A5E72AA");
 
                 entity.ToTable("SanPham");
 
-                entity.HasIndex(e => e.TenSanPham, "UQ__SanPham__FCA80469F3A0194B")
+                entity.HasIndex(e => e.TenSanPham, "UQ__SanPham__FCA8046959196187")
                     .IsUnique();
 
                 entity.Property(e => e.IdsanPham).HasColumnName("IDSanPham");
@@ -798,7 +796,7 @@ namespace BHC_Server.Models
             modelBuilder.Entity<TaoLich>(entity =>
             {
                 entity.HasKey(e => e.IdtaoLich)
-                    .HasName("PK__TaoLich__4CD8CD8D422BAEC9");
+                    .HasName("PK__TaoLich__4CD8CD8DFD07CD2D");
 
                 entity.ToTable("TaoLich");
 
@@ -814,7 +812,7 @@ namespace BHC_Server.Models
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.TrangThai).HasDefaultValueSql("((1))");
+                entity.Property(e => e.TrangThaiTaoLich).HasDefaultValueSql("((1))");
 
                 entity.HasOne(d => d.IddatLichNavigation)
                     .WithMany(p => p.TaoLiches)
@@ -830,7 +828,7 @@ namespace BHC_Server.Models
             modelBuilder.Entity<XaPhuong>(entity =>
             {
                 entity.HasKey(e => e.IdxaPhuong)
-                    .HasName("PK__XaPhuong__9B0E8729C51FF0F3");
+                    .HasName("PK__XaPhuong__9B0E87290D4234D0");
 
                 entity.ToTable("XaPhuong");
 
@@ -849,7 +847,7 @@ namespace BHC_Server.Models
             modelBuilder.Entity<XacThucDangKyMoCoSoYte>(entity =>
             {
                 entity.HasKey(e => e.IdxacThucDangKyMoCoSoYte)
-                    .HasName("PK__XacThucD__D7D33CA5686C564D");
+                    .HasName("PK__XacThucD__D7D33CA54FD4B735");
 
                 entity.ToTable("XacThucDangKyMoCoSoYTe");
 

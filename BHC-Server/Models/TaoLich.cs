@@ -5,10 +5,10 @@ namespace BHC_Server.Models
 {
     public partial class TaoLich
     {
-        public int? IdtaoLich { get; set; } = null;
+        public int IdtaoLich { get; set; }
         public int? IdnguoiDungDatLich { get; set; }
         public int? IddatLich { get; set; }
-        public int? TrangThai { get; set; }
+        public int? TrangThaiTaoLich { get; set; }
         public DateTime? NgayGioDatLich { get; set; }
         public string? LyDoKham { get; set; }
 

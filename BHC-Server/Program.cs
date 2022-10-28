@@ -2,20 +2,24 @@ using BHC_Server.Models;
 using EmailSend.Core.HostServices;
 using Microsoft.EntityFrameworkCore;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-builder.Services.AddDbContext<DB_BHCContext>(Option =>
-{
-    Option.UseSqlServer(builder.Configuration.GetConnectionString("DBCon"));
-});
 
 
 builder.Services.AddCors(p => p.AddPolicy("cors", build =>
 {
     build.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
 }));
+
+
+builder.Services.AddDbContext<DB_BHCContext>(Option =>
+{
+    Option.UseSqlServer(builder.Configuration.GetConnectionString("DBCon"));
+   
+});
+
 
 builder.Services.AddSingleton<EmailHostedService>();
 builder.Services.AddHostedService(provider => provider.GetService<EmailHostedService>());

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "XJ6NOxoNWbr+L2ZhKlgZ07UjONc2EvIg2PXMTGUT0TpoDeI7hYSW/96lZw+8NMTYdS0p55spxuZ9ivAbhe3v+g==",
+  "dgSpecHash": "/RSbIfe8exPM5LHNFd5v6p38jzJDkY4tbFMqriar2p9InHa2EQ6nQpnbAMiILZjVU7+Mfo+QjC/CSKJ1GSSDKA==",
   "success": true,
   "projectFilePath": "D:\\Build project\\Server\\BHC-Server\\BHC-Server\\BHC-Server.csproj",
   "expectedPackageFiles": [
@@ -20,8 +20,10 @@
     "C:\\Users\\Tu Nguyen\\.nuget\\packages\\microsoft.aspnetcore.http.abstractions\\2.2.0\\microsoft.aspnetcore.http.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\Tu Nguyen\\.nuget\\packages\\microsoft.aspnetcore.http.extensions\\2.2.0\\microsoft.aspnetcore.http.extensions.2.2.0.nupkg.sha512",
     "C:\\Users\\Tu Nguyen\\.nuget\\packages\\microsoft.aspnetcore.http.features\\2.2.0\\microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",
+    "C:\\Users\\Tu Nguyen\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\6.0.10\\microsoft.aspnetcore.jsonpatch.6.0.10.nupkg.sha512",
+    "C:\\Users\\Tu Nguyen\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\6.0.10\\microsoft.aspnetcore.mvc.newtonsoftjson.6.0.10.nupkg.sha512",
     "C:\\Users\\Tu Nguyen\\.nuget\\packages\\microsoft.aspnetcore.webutilities\\2.2.0\\microsoft.aspnetcore.webutilities.2.2.0.nupkg.sha512",
-    "C:\\Users\\Tu Nguyen\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
+    "C:\\Users\\Tu Nguyen\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\Tu Nguyen\\.nuget\\packages\\microsoft.data.sqlclient\\2.1.4\\microsoft.data.sqlclient.2.1.4.nupkg.sha512",
     "C:\\Users\\Tu Nguyen\\.nuget\\packages\\microsoft.data.sqlclient.sni.runtime\\2.1.1\\microsoft.data.sqlclient.sni.runtime.2.1.1.nupkg.sha512",
     "C:\\Users\\Tu Nguyen\\.nuget\\packages\\microsoft.entityframeworkcore\\6.0.9\\microsoft.entityframeworkcore.6.0.9.nupkg.sha512",
@@ -61,6 +63,7 @@
     "C:\\Users\\Tu Nguyen\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
     "C:\\Users\\Tu Nguyen\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
     "C:\\Users\\Tu Nguyen\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\Tu Nguyen\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512",
     "C:\\Users\\Tu Nguyen\\.nuget\\packages\\openssl.privatekeydecoder\\1.2.0\\openssl.privatekeydecoder.1.2.0.nupkg.sha512",
     "C:\\Users\\Tu Nguyen\\.nuget\\packages\\openssl.x509certificate2.provider\\1.2.0\\openssl.x509certificate2.provider.1.2.0.nupkg.sha512",
     "C:\\Users\\Tu Nguyen\\.nuget\\packages\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",

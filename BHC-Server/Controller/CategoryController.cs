@@ -171,11 +171,12 @@ namespace BHC_Server.Controllers
         [HttpGet("getGiodattLichByNgayDatLich/{ngaydatlich}/{idbacsi}")]
         public IActionResult getGiodattLichByNgayDatLich(DateTime ngaydatlich,string idbacsi)
         {
-        
             var thoigianlichkham = from x in _context.KeHoachKhams
                                    join c in _context.DatLiches on x.IdkeHoachKham equals c.IdkeHoachKham
                                    where x.NgayDatLich == ngaydatlich && x.IdbacSi == idbacsi
-                                   select new { c.ThoiGianDatLich, c.IddatLich };
+                                   select new { 
+                                       c.ThoiGianDatLich, c.IddatLich , c.SoLuongHienTai , 
+                                       c.SoLuongToiDa, x.NgayDatLich,c.TrangThaiDatLich,x.TrangThaiKeHoachKham};
 
             if(thoigianlichkham.Count() > 0)
             {

@@ -13,7 +13,7 @@ namespace BHC_Server.Models
         public int IdkeHoachKham { get; set; }
         public string? IdbacSi { get; set; }
         public DateTime NgayDatLich { get; set; }
-        public int? TrangThai { get; set; }
+        public int? TrangThaiKeHoachKham { get; set; }
 
         public virtual BacSi? IdbacSiNavigation { get; set; }
         public virtual ICollection<DatLich> DatLiches { get; set; }

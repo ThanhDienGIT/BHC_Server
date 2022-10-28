@@ -68,3 +68,6 @@ D:\Build project\Server\BHC-Server\BHC-Server\bin\Debug\net6.0\OpenSSL.PrivateKe
 D:\Build project\Server\BHC-Server\BHC-Server\bin\Debug\net6.0\OpenSSL.X509Certificate2.Provider.dll
 D:\Build project\Server\BHC-Server\BHC-Server\bin\Debug\net6.0\EmailSend.Core.dll
 D:\Build project\Server\BHC-Server\BHC-Server\bin\Debug\net6.0\EmailSend.Core.pdb
+D:\Build project\Server\BHC-Server\BHC-Server\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\Build project\Server\BHC-Server\BHC-Server\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\Build project\Server\BHC-Server\BHC-Server\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll

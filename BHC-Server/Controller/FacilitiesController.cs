@@ -45,7 +45,6 @@ namespace BHC_Server.Controllers
             return BadRequest("No Data");
         }
 
-
         [HttpPost]
         public IActionResult RegisterFacitilies(RegisterFacitilies dangky)
         {

@@ -2,8 +2,8 @@
 {
     public class ThayDoiKeHoach
     {
-        public int idkehoach { get; set; }
+        public int iddatlich { get; set; }
         public string thoiGianDatLich { get; set; }
-        public string CheckthoiGianDatLich { get; set; }
+        public int soluongdatlich { get; set; }
     }
 }

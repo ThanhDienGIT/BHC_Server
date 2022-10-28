@@ -30,7 +30,7 @@ namespace BHC_Server.Controllers
             }
             else
             {
-                 a.TrangThai = 2;
+                 a.TrangThaiDatLich = 2;
                 _context.SaveChanges();
                 return Ok("Success");
             }
@@ -76,32 +76,38 @@ namespace BHC_Server.Controllers
         }
 
         [HttpPost("DatLich")]
-        public async Task<IActionResult> datlichAsync(TaoLich taoLich)
+        public async Task<IActionResult> DatLich(TaoLich taoLich)
         {
             var CheckDatLich = _context.TaoLiches
                                .FirstOrDefault(x => x.IddatLich == taoLich.IddatLich && x.IdnguoiDungDatLich == taoLich.IdnguoiDungDatLich);
             var datlich = _context.DatLiches.FirstOrDefault(x => x.IddatLich == taoLich.IddatLich);
             var nguoidung = _context.NguoiDungs.FirstOrDefault(x => x.IdNguoiDung == taoLich.IdnguoiDungDatLich);
-            if (CheckDatLich == null && datlich != null && nguoidung != null)
-            {
+            
+             if (CheckDatLich == null && datlich != null && nguoidung != null)
+             {
                  var Newbook = new TaoLich
                   {
                       IdnguoiDungDatLich = taoLich.IdnguoiDungDatLich,
                       IddatLich = taoLich.IddatLich,
                       LyDoKham = taoLich.LyDoKham,
-                      TrangThai = taoLich.TrangThai,
+                      TrangThaiTaoLich = taoLich.TrangThaiTaoLich,
                   };
                   _context.TaoLiches.Add(Newbook);
-                  datlich.SoLuongToiDa--;
-                  _context.SaveChanges(); 
-                return Ok("Success");
+                  if(datlich.SoLuongHienTai >= datlich.SoLuongToiDa)
+                    {
+                      return Ok("Đã hết chỗ");
+                     }
+                else
+                {
+                    datlich.SoLuongHienTai++;
+                    _context.SaveChanges();
+                    return Ok("Success");
+                }      
             }
             else
             {
                 return BadRequest("Đã book");
             }
-
-            return BadRequest("Failed");
         }
 
         [HttpGet("XacThucDatLich/{idnguoidung}")]
@@ -125,9 +131,6 @@ namespace BHC_Server.Controllers
             {
                 return BadRequest("failed");
             }
-
-
-            
         }
 
         [HttpPut("ApprovalMedical")]
@@ -140,7 +143,7 @@ namespace BHC_Server.Controllers
             }
             else
             {
-                a.TrangThai = 3;
+                a.TrangThaiDatLich = 3;
                 _context.SaveChanges();
                 return Ok("Success");
             }
@@ -155,7 +158,7 @@ namespace BHC_Server.Controllers
             }
             else
             {
-                a.TrangThai = 0;
+                a.TrangThaiDatLich = 0;
                 _context.SaveChanges();
                 return Ok("Success");
             }
@@ -182,5 +185,8 @@ namespace BHC_Server.Controllers
                 return BadRequest("failed");
             }
         }
+
+        
+
     }
 }

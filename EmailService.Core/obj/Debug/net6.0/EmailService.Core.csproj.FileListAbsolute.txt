@@ -19,3 +19,8 @@ D:\Build project\Server\BHC-Server\EmailService.Core\obj\Debug\net6.0\refint\Ema
 D:\Build project\Server\BHC-Server\EmailService.Core\obj\Debug\net6.0\EmailService.Core.pdb
 D:\Build project\Server\BHC-Server\EmailService.Core\obj\Debug\net6.0\EmailService.Core.genruntimeconfig.cache
 D:\Build project\Server\BHC-Server\EmailService.Core\obj\Debug\net6.0\ref\EmailService.Core.dll
+D:\Build project\Server\BHC-Server\EmailService.Core\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\Build project\Server\BHC-Server\EmailService.Core\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\Build project\Server\BHC-Server\EmailService.Core\bin\Debug\net6.0\Newtonsoft.Json.dll
+D:\Build project\Server\BHC-Server\EmailService.Core\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
+D:\Build project\Server\BHC-Server\EmailService.Core\obj\Debug\net6.0\EmailService.Core.csproj.CopyComplete

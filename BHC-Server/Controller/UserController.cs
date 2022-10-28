@@ -156,5 +156,34 @@ namespace BookingHealthCare_Server.Controllers
                 return BadRequest("Nodata");
             }     
         }
+
+        [HttpGet("LayLichSuDatLich/{iduser}")]
+        public IActionResult LayLichSuDatLich(int iduser)
+        {
+            var ListScheduleUser = (from x in _Context.KeHoachKhams
+                                   join c in _Context.DatLiches on x.IdkeHoachKham equals c.IdkeHoachKham
+                                   join d in _Context.TaoLiches on c.IddatLich equals d.IddatLich
+                                   join e in _Context.BacSis on x.IdbacSi equals e.IdbacSi
+                                   join k in _Context.PhongKhams on e.IdphongKham equals k.IdphongKham
+                                   where d.IdnguoiDungDatLich == iduser
+                                   select new
+                                   {
+                                       x.NgayDatLich,
+                                       x.TrangThaiKeHoachKham,
+                                       c.ThoiGianDatLich,
+                                       c.TrangThaiDatLich,
+                                       d.NgayGioDatLich,
+                                       d.LyDoKham,
+                                       d.TrangThaiTaoLich,
+                                       e.SoDienThoaiBacSi,
+                                       e.HoTenBacSi,
+                                       e.GiaKham,
+                                       k.DiaChi,
+                                   }).OrderBy(x=>x.NgayDatLich);
+
+            return Ok(ListScheduleUser);
+        }
+
+
     }
 }
