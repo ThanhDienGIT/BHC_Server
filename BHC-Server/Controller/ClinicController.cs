@@ -211,10 +211,6 @@ namespace BHC_Server.Controller
         }
 
 
-
-
-
-
         [HttpGet("GetTypeListSpecialist")]
         public IActionResult GetTypeListSpecialist()
         {
@@ -236,6 +232,23 @@ namespace BHC_Server.Controller
             }
               
         }
+
+        [HttpGet("LayDanhSachBacSiCuaMotPhongKham/{idphongkham}")]
+        public IActionResult DanhSachBacSi(string idphongkham)
+        {
+            var danhsachbacsi = from x in _context.PhongKhams
+                                join BacSi in _context.BacSis on x.IdphongKham equals BacSi.IdphongKham
+                                where x.IdphongKham == idphongkham
+                                select new
+                                {
+                                    BacSi
+                                };
+
+            return Ok(danhsachbacsi);
+        }
+
+
+
 
         [HttpGet("laychuyenkhoabyidbacsi/{idbacsi}")]
         public IActionResult laychuyenkhoabyidbacsi(string idbacsi)
@@ -308,6 +321,28 @@ namespace BHC_Server.Controller
                 return BadRequest("Have User");
             }
         }
+
+        [HttpGet("LayThongTinPHongKhamByIdPhongKham/{idphongkham}")]
+        public IActionResult LayThongTinPHongKhamByIdPhongKham(string idphongkham)
+        {
+            var info = _context.PhongKhams.FirstOrDefault(x => x.IdphongKham == idphongkham);
+
+            return Ok(info);
+        }
+
+        [HttpGet("LayChuyenKhoaPhongKham/{idphongkham}")]
+        public IActionResult LayChuyenKhoaPhongKham(string idphongkham)
+        {
+            var chuyenkhoa = _context.PhongKhams.Where(x => x.IdphongKham == idphongkham).Select(s => new
+            {
+                s.IdchuyenKhoas,
+            });
+
+
+
+            return Ok(chuyenkhoa);    
+        }
+
 
 
         [HttpPut("EditDoctor")]
