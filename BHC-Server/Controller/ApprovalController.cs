@@ -34,8 +34,31 @@ namespace BHC_Server.Controllers
                 _context.SaveChanges();
                 return Ok("Success");
             }
+        }
 
-           
+        [HttpGet("CheckCoTaoLichKhong/{idnguoidung}/{iddatlich}")]
+        public IActionResult CheckCoTaoLichKhong(int idnguoidung, int iddatlich)
+        {
+            var list = _context.TaoLiches.FirstOrDefault(x => x.IdnguoiDungDatLich == idnguoidung && x.IddatLich == iddatlich);
+            var tontainguoidunghaykhong = _context.NguoiDungs.FirstOrDefault(x => x.IdNguoiDung == idnguoidung);
+            var tontailichdohaykhong = _context.DatLiches.FirstOrDefault(x => x.IddatLich == iddatlich);
+            if (list == null && tontailichdohaykhong != null && tontainguoidunghaykhong != null)
+            {
+                return Ok("Success");
+
+            }
+            else
+            {
+                if(list != null)
+                {
+                    return BadRequest("Đã đặt lịch");
+                }
+                else
+                {
+                    return BadRequest("Không tồn tại lịch này");
+                }
+               
+            }
         }
 
         [HttpPost("CheckKeHoach")]
@@ -73,6 +96,32 @@ namespace BHC_Server.Controllers
                 _context.DatLiches.Add(DatLich);
                 _context.SaveChanges();
                 return Ok("createdatlich");
+        }
+
+
+        [HttpPost("CheckDatLich")]
+        public async Task<IActionResult> CheckDatLich(TaoLich taoLich)
+        {
+            var CheckDatLich = _context.TaoLiches
+                               .FirstOrDefault(x => x.IddatLich == taoLich.IddatLich && x.IdnguoiDungDatLich == taoLich.IdnguoiDungDatLich);
+            var datlich = _context.DatLiches.FirstOrDefault(x => x.IddatLich == taoLich.IddatLich);
+            var nguoidung = _context.NguoiDungs.FirstOrDefault(x => x.IdNguoiDung == taoLich.IdnguoiDungDatLich);
+
+            if (CheckDatLich == null && datlich != null && nguoidung != null)
+            {
+                if (datlich.SoLuongHienTai >= datlich.SoLuongToiDa)
+                {
+                    return Ok("Đã hết chỗ");
+                }
+                else
+                {
+                    return Ok("Success");
+                }
+            }
+            else
+            {
+                return BadRequest("Đã book");
+            }
         }
 
         [HttpPost("DatLich")]

@@ -14,7 +14,7 @@ namespace BHC_Server.Models
         public int? IdkeHoachKham { get; set; }
         public int? TrangThaiDatLich { get; set; }
         public int? SoLuongToiDa { get; set; }
-        public int? SoLuongHienTai { get; set; } = 0;
+        public int? SoLuongHienTai { get; set; }
         public string? ThoiGianDatLich { get; set; }
 
         public virtual KeHoachKham? IdkeHoachKhamNavigation { get; set; }

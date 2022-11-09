@@ -21,6 +21,7 @@ namespace BHC_Server.Models
         public DateTime? NgayXetDuyet { get; set; }
         public string DiaChi { get; set; } = null!;
         public bool? LoaiPhongKham { get; set; }
+        public int? LoaiCoSo { get; set; }
         public int? XaPhuong { get; set; }
         public int? TrangThaiXacThuc { get; set; }
 

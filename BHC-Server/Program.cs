@@ -14,6 +14,7 @@ builder.Services.AddCors(p => p.AddPolicy("cors", build =>
 }));
 
 
+
 builder.Services.AddDbContext<DB_BHCContext>(Option =>
 {
     Option.UseSqlServer(builder.Configuration.GetConnectionString("DBCon"));

@@ -48,15 +48,8 @@ namespace BHC_Server.Controllers
                              join d in _context.BacSis on c.IdbacSi equals d.IdbacSi
                              where d.IdbacSi == idbacsi
                              select a.TenChuyenKhoa;
-            if(chuyenkhoa.Count() > 0)
-            {
-                return Ok(chuyenkhoa);
-            }
-            else
-            {
-                return BadRequest(chuyenkhoa);
-            }
-            
+          
+                return Ok(chuyenkhoa);       
         }
 
         [HttpGet("GetDiaChi/{idbacsi}")]
@@ -88,14 +81,36 @@ namespace BHC_Server.Controllers
         public IActionResult GetAllClinic()
         {
             var a = from s in _context.PhongKhams
+                    join d in _context.ChuyenKhoaPhongKhams on s.IdphongKham equals d.IdphongKham
+                    join c in _context.ChuyenKhoas on d.IdchuyenKhoa equals c.IdchuyenKhoa
                     select new
                     {
-                        s.TenPhongKham,
-                        s.IdphongKham,
-                        s.IdchuyenKhoas,
-                        s.HinhAnh,
+                        s
                     };
             return Ok(a);
+        }
+
+        [HttpGet("SoLanKhamThanhCongCuaBacSi/{idbacsi}")]
+        public IActionResult SoLanKhamThanhCongCuaBacSi(string idbacsi)
+        {
+            var solankham = from x in _context.KeHoachKhams
+                            join c in _context.DatLiches on x.IdkeHoachKham equals c.IdkeHoachKham
+                            join d in _context.TaoLiches on c.IddatLich equals d.IddatLich
+                            where x.IdbacSi == idbacsi && d.TrangThaiTaoLich == 3 || d.TrangThaiTaoLich == 4
+                            select new
+                            {
+                                d
+                            };
+
+            return Ok(solankham.Count());
+        }
+
+
+        [HttpGet("LayThongTinBacSiBangID/{idbacsi}")]
+        public IActionResult LayThongTinBacSiBangID(string idbacsi)
+        {
+            var info = _context.BacSis.FirstOrDefault(x => x.IdbacSi == idbacsi);
+            return Ok(info);
         }
 
         [HttpGet("GetDoctorById/{idbacsi}")]
@@ -138,21 +153,13 @@ namespace BHC_Server.Controllers
                                where d.IdbacSi == idbacsi
                                select c.TenChucDanh;
 
-            if(listchucdanh.Count() == null)
-            {
-                return BadRequest("no data");
-            }
-            else
-            {
+          
                 return Ok(listchucdanh);
-            }
+    
 
         }
 
-
-
-
-
+      
         [HttpGet("Getbookbyiddoctor/{idbacsi}")]
         public IActionResult Getbookbyiddoctor(string idbacsi)
         {
@@ -178,18 +185,28 @@ namespace BHC_Server.Controllers
                                        c.ThoiGianDatLich, c.IddatLich , c.SoLuongHienTai , 
                                        c.SoLuongToiDa, x.NgayDatLich,c.TrangThaiDatLich,x.TrangThaiKeHoachKham};
 
-            if(thoigianlichkham.Count() > 0)
-            {
                 return Ok(thoigianlichkham);
-            }
-            else
-            {
-                return BadRequest("No data");
-            }
-
-          
-
         }
+
+
+        [HttpGet("LayTatCaNhanVienYTeKHac")]
+        public IActionResult LayTatCaNhanVienYTeKHac()
+        {
+            var listnhanvienytekhac = _context.NhanVienCoSos.ToList();
+                
+            return Ok(listnhanvienytekhac);
+        }
+
+        
+
+        [HttpGet("LayTatCaPhongKham")]
+        public IActionResult LaytatcaPhongKham()
+        {
+            var listClinic = _context.PhongKhams.ToList();
+          
+            return Ok(listClinic);
+        }
+
 
         [HttpGet("getphongkhamByIdBacSi/{idbacsi}")]
         public IActionResult getphongkhamByIdBacSi(string idbacsi)

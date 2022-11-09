@@ -10,6 +10,6 @@ namespace BHC_Server.Models
         public int? IdchuyenKhoa { get; set; }
 
         public virtual BacSi? IdbacSiNavigation { get; set; }
-        public virtual ChuyenKhoa? IdchuyenKhoaNavigation { get; set; }
+        public virtual ChuyenKhoaPhongKham? IdchuyenKhoaNavigation { get; set; }
     }
 }

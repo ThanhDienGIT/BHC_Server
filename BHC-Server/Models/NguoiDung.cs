@@ -8,9 +8,13 @@ namespace BHC_Server.Models
         public NguoiDung()
         {
             BacSis = new HashSet<BacSi>();
+            CoSoDichVuKhacs = new HashSet<CoSoDichVuKhac>();
             DonHangs = new HashSet<DonHang>();
+            LichHens = new HashSet<LichHen>();
             NhaThuocs = new HashSet<NhaThuoc>();
+            NhanVienCoSos = new HashSet<NhanVienCoSo>();
             PhongKhams = new HashSet<PhongKham>();
+            TaoLichNhanVienCoSos = new HashSet<TaoLichNhanVienCoSo>();
             TaoLiches = new HashSet<TaoLich>();
             XacThucDangKyMoCoSoYtes = new HashSet<XacThucDangKyMoCoSoYte>();
         }
@@ -32,6 +36,7 @@ namespace BHC_Server.Models
         public bool? TrangThaiNguoiDung { get; set; }
         public bool? TrangThaiNhaThuoc { get; set; }
         public bool? TrangThaiPhongKham { get; set; }
+        public bool? TrangThaiCoSoYte { get; set; }
         public decimal? CanNang { get; set; }
         public decimal? ChieuCao { get; set; }
         public decimal? Bmi { get; set; }
@@ -42,9 +47,13 @@ namespace BHC_Server.Models
         public bool? XacThuc { get; set; }
 
         public virtual ICollection<BacSi> BacSis { get; set; }
+        public virtual ICollection<CoSoDichVuKhac> CoSoDichVuKhacs { get; set; }
         public virtual ICollection<DonHang> DonHangs { get; set; }
+        public virtual ICollection<LichHen> LichHens { get; set; }
         public virtual ICollection<NhaThuoc> NhaThuocs { get; set; }
+        public virtual ICollection<NhanVienCoSo> NhanVienCoSos { get; set; }
         public virtual ICollection<PhongKham> PhongKhams { get; set; }
+        public virtual ICollection<TaoLichNhanVienCoSo> TaoLichNhanVienCoSos { get; set; }
         public virtual ICollection<TaoLich> TaoLiches { get; set; }
         public virtual ICollection<XacThucDangKyMoCoSoYte> XacThucDangKyMoCoSoYtes { get; set; }
     }

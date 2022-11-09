@@ -8,7 +8,7 @@ namespace BHC_Server.Models
         public PhongKham()
         {
             BacSis = new HashSet<BacSi>();
-            IdchuyenKhoas = new HashSet<ChuyenKhoa>();
+            ChuyenKhoaPhongKhams = new HashSet<ChuyenKhoaPhongKham>();
         }
 
         public string IdphongKham { get; set; } = null!;
@@ -16,6 +16,11 @@ namespace BHC_Server.Models
         public string DiaChi { get; set; } = null!;
         public string TenPhongKham { get; set; } = null!;
         public string HinhAnh { get; set; } = null!;
+        public string? AnhDaiDienPhongKham { get; set; }
+        public string? LoiGioiThieu { get; set; }
+        public string? ChuyenMon { get; set; }
+        public string? TrangThietBi { get; set; }
+        public string? ViTri { get; set; }
         public int IdxaPhuong { get; set; }
         public bool? BaoHiem { get; set; }
         public bool LoaiPhongKham { get; set; }
@@ -26,7 +31,6 @@ namespace BHC_Server.Models
         public virtual NguoiDung? IdnguoiDungNavigation { get; set; }
         public virtual XaPhuong IdxaPhuongNavigation { get; set; } = null!;
         public virtual ICollection<BacSi> BacSis { get; set; }
-
-        public virtual ICollection<ChuyenKhoa> IdchuyenKhoas { get; set; }
+        public virtual ICollection<ChuyenKhoaPhongKham> ChuyenKhoaPhongKhams { get; set; }
     }
 }

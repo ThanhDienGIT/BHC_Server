@@ -7,8 +7,7 @@ namespace BHC_Server.Models
     {
         public ChuyenKhoa()
         {
-            PhanLoaiBacSiChuyenKhoas = new HashSet<PhanLoaiBacSiChuyenKhoa>();
-            IdphongKhams = new HashSet<PhongKham>();
+            ChuyenKhoaPhongKhams = new HashSet<ChuyenKhoaPhongKham>();
         }
 
         public int IdchuyenKhoa { get; set; }
@@ -16,8 +15,6 @@ namespace BHC_Server.Models
         public string? Anh { get; set; }
         public string? MoTa { get; set; }
 
-        public virtual ICollection<PhanLoaiBacSiChuyenKhoa> PhanLoaiBacSiChuyenKhoas { get; set; }
-
-        public virtual ICollection<PhongKham> IdphongKhams { get; set; }
+        public virtual ICollection<ChuyenKhoaPhongKham> ChuyenKhoaPhongKhams { get; set; }
     }
 }
