@@ -11,6 +11,7 @@
         public string AnhChungChiHanhNghe { get; set; } = null!;
         public string DiaChi { get; set; } = null!;
         public bool? LoaiPhongKham { get; set; }
+        public int? idLoaiCoSoYTe { get; set; }
         public int? XaPhuong { get; set; }
 
     }

@@ -146,8 +146,59 @@ namespace BHC_Server.Controller
            
         }
 
+        [HttpGet("Laychuyenkhoacuamotphongkham/{idbacsi}")]
+        public IActionResult Laychuyenkhoacuamotphongkham(string idbacsi)
+        {
+            var list = from x in _context.PhongKhams
+                       join c in _context.ChuyenKhoaPhongKhams on x.IdphongKham equals c.IdphongKham
+                       join d in _context.ChuyenKhoas on c.IdchuyenKhoa equals d.IdchuyenKhoa
+                       join e in _context.BacSis on x.IdphongKham equals e.IdphongKham
+                       where e.IdbacSi == idbacsi
+                       select new
+                       {
+                           x.IdphongKham,
+                           d.TenChuyenKhoa,
+                           d.IdchuyenKhoa,
+                       };
+            return Ok(list);
+        }
 
-        
+        [HttpGet("layphongkhambangidbacsi/{idbacsi}")]
+        public IActionResult layphongkhambangidbacsi(string idbacsi)
+        {
+            var phongkham = (from x in _context.BacSis
+                            join d in _context.PhongKhams on x.IdphongKham equals d.IdphongKham
+                            where x.IdbacSi == idbacsi
+                            select d).FirstOrDefault();
+            return Ok(phongkham);
+        }
+
+        [HttpGet("layphongkhambangidphongkham/{idphongkham}")]
+        public IActionResult layphongkhambangidphongkham(string idphongkham)
+        {
+            var phongkham = _context.PhongKhams.FirstOrDefault(x => x.IdphongKham == idphongkham);
+                            
+            return Ok(phongkham);
+        }
+
+        [HttpGet("laychuyenkhoaphongkhambangidphongkham/{idphongkham}")]
+        public IActionResult laychuyenkhoaphongkhambangidphongkham(string idphongkham)
+        {
+            var list = from x in _context.PhongKhams
+                       join c in _context.ChuyenKhoaPhongKhams on x.IdphongKham equals c.IdphongKham
+                       join d in _context.ChuyenKhoas on c.IdchuyenKhoa equals d.IdchuyenKhoa
+                       where x.IdphongKham == idphongkham
+                       select new
+                       {
+                           x.IdphongKham,
+                           d.TenChuyenKhoa,
+                           d.IdchuyenKhoa,
+                       };
+            return Ok(list);
+        }
+
+
+
         [HttpPost("PhanLoaiBacSi/{idbacsi}")]
         public IActionResult PhanLoaiBacSi(List<PhanLoaiBacSiChuyenKhoa> phanloai,string idbacsi)
         {
@@ -308,15 +359,18 @@ namespace BHC_Server.Controller
             var ListChuyenKhoa = from x in _context.BacSis
                                  join c in _context.PhanLoaiBacSiChuyenKhoas on x.IdbacSi equals c.IdbacSi
                                  join d in _context.ChuyenKhoas on c.IdchuyenKhoa equals d.IdchuyenKhoa
+                                 join z in _context.PhongKhams on x.IdphongKham equals z.IdphongKham
                                  where x.IdbacSi == idbacsi
                                  select new
                                  {
-                                     x.IdbacSi,
+                                     z.IdphongKham,
                                      d.TenChuyenKhoa,  
+                                     d.IdchuyenKhoa,
                                  };        
 
             return Ok(ListChuyenKhoa);
         }
+
 
         [HttpGet("GetTypeListSpecialist")]
         public IActionResult GetTypeListSpecialist()
@@ -354,6 +408,22 @@ namespace BHC_Server.Controller
             return Ok(danhsachbacsi);
         }
 
+        [HttpPut("Capnhatmotaphongkham")]
+        public IActionResult Capnhatmotaphongkham(CapNhatMoTaPhongKham mota)
+        {
+            var checkphongkham = _context.PhongKhams.FirstOrDefault(x => x.IdphongKham == mota.idphongkham);
+            if(checkphongkham != null)
+            {
+                checkphongkham.LoiGioiThieu = mota.loigoithieu;
+                checkphongkham.ChuyenMon = mota.chuyenmon;
+                checkphongkham.TrangThietBi = mota.trangthietbi;
+                checkphongkham.ViTri = mota.vitri;
+                _context.SaveChanges();
+                return Ok("Success");
+            }
+;            return BadRequest("Not found");
+        }
+
         [HttpGet("XaPhuongQuanHuyenPhongKham/{idphongkham}")]
         public IActionResult XaPhuongQuanHuyenPhongKham(string idphongkham)
         {
@@ -370,6 +440,27 @@ namespace BHC_Server.Controller
                           };
             return Ok(address);
         }
+
+        [HttpGet("XaPhuongQuanHuyenPhongKhambacsi/{idbacsi}")]
+        public IActionResult XaPhuongQuanHuyenPhongKhambacsi(string idbacsi)
+        {
+            var address = from x in _context.XaPhuongs
+                          join c in _context.QuanHuyens on x.IdquanHuyen equals c.IdquanHuyen
+                          join d in _context.PhongKhams on x.IdxaPhuong equals d.IdxaPhuong
+                          join q in _context.BacSis on d.IdphongKham equals q.IdphongKham
+                          where q.IdbacSi == idbacsi
+                          select new
+                          {
+                              x.TenXaPhuong,
+                              c.TenQuanHuyen,
+                              c.IdquanHuyen,
+                              x.IdxaPhuong,
+                              d.IdphongKham,
+                              d.DiaChi,
+                          };
+            return Ok(address);
+        }
+
 
 
         [HttpGet("Laytatcachucdanhbacsi/{idphongkham}")]
@@ -412,6 +503,107 @@ namespace BHC_Server.Controller
             }
                      
         }
+
+        [HttpPut("EditChuyenKhoaBacSi/{idbacsi}")]
+        public IActionResult EditChuyenKhoaBacSi(string idbacsi,List<PhanLoaiBacSiChuyenKhoa> phanloai)
+        {
+            var listchuyenkhoa = _context.PhanLoaiBacSiChuyenKhoas.Where(x => x.IdbacSi == idbacsi);
+            _context.PhanLoaiBacSiChuyenKhoas.RemoveRange(listchuyenkhoa);
+
+            var list = new List<PhanLoaiBacSiChuyenKhoa>();
+            phanloai.ForEach(ele =>
+            {
+                list.Add(
+                  new PhanLoaiBacSiChuyenKhoa() { IdbacSi = idbacsi, IdchuyenKhoa = ele.IdchuyenKhoa }
+                );
+            });
+            _context.PhanLoaiBacSiChuyenKhoas.AddRange(list);
+            _context.SaveChanges();
+            return Ok(list);
+        }
+
+        [HttpPut("themchucdanhbacsi/{idbacsi}")]
+        public IActionResult themchucdanhbacsi(string idbacsi, List<ChucDanhBacSi> phanloai)
+        {
+            var listchuyenkhoa = _context.PhanLoaiBacSiChuyenKhoas.Where(x => x.IdbacSi == idbacsi);
+            if(listchuyenkhoa != null)
+            {
+                _context.PhanLoaiBacSiChuyenKhoas.RemoveRange(listchuyenkhoa);
+                var list = new List<ChucDanhBacSi>();
+                phanloai.ForEach(ele =>
+                {
+                    list.Add(
+                      new ChucDanhBacSi() { IdbacSi = idbacsi, IdchucDanh = ele.IdchucDanh }
+                    );
+                });
+                _context.ChucDanhBacSis.AddRange(list);
+                _context.SaveChanges();
+                return Ok(list);
+            }
+            else
+            {
+                var list = new List<ChucDanhBacSi>();
+                phanloai.ForEach(ele =>
+                {
+                    list.Add(
+                      new ChucDanhBacSi() { IdbacSi = idbacsi, IdchucDanh = ele.IdchucDanh }
+                    );
+                });
+                _context.ChucDanhBacSis.AddRange(list);
+                _context.SaveChanges();
+                return Ok(list);
+            }     
+        }
+
+        [HttpGet("Danhsachchucdanh")]
+        public IActionResult Danhsachchucdanh()
+        {
+            var list = _context.ChucDanhs.ToList();
+            return Ok(list);
+        }
+
+        [HttpGet("laychucdanhcuabacsi/{idbacsi}")]
+        public IActionResult laychucdanhcuabacsi(string idbacsi)
+        {
+            var list = from x in _context.BacSis
+                       join c in _context.ChucDanhBacSis on x.IdbacSi equals c.IdbacSi
+                       join d in _context.ChucDanhs on c.IdchucDanh equals d.IdchucDanh
+                       where x.IdbacSi == idbacsi
+                       select new
+                       {
+                           x.IdbacSi,
+                           d.TenChucDanh,
+                           d.IdchucDanh
+                       };
+
+            return Ok(list);
+        }
+
+        [HttpPost("Capnhatmota/{idbacsi}")]
+        public IActionResult Capnhatmota(string idbacsi,CapNhatMoTabacSi mota)
+        {
+            var bacsi = _context.BacSis.FirstOrDefault(x => x.IdbacSi == idbacsi);
+            if(bacsi != null)
+            {
+                bacsi.MoTa = mota.mota;
+                _context.SaveChanges();
+                return Ok("Success");
+            };
+            return BadRequest("failed");
+        }
+
+        [HttpGet("laymotabacsi/{idbacsi}")]
+        public IActionResult laymotabacsi(string idbacsi)
+        {
+            var bacsi = _context.BacSis.FirstOrDefault(x => x.IdbacSi == idbacsi);
+            if (bacsi != null)
+            {
+                return Ok(bacsi.MoTa);
+            };
+            return BadRequest("failed");
+        }
+
+
 
         [HttpPut("DeleteDoctor/{iddoctor}")]
         public IActionResult DeleteDocTor(string iddoctor)
@@ -732,6 +924,43 @@ namespace BHC_Server.Controller
             return Ok(Danhsachxaphuong);
         }
 
+        [HttpGet("idquanhuyentheoidxaphuong/{idxaphuong}")]
+        public IActionResult idquanhuyentheoidxaphuong(int idxaphuong)
+        {
+            var xaphuong = _context.XaPhuongs.FirstOrDefault(x => x.IdxaPhuong == idxaphuong);
+            if(xaphuong != null)
+            {
+                return Ok(xaphuong.IdquanHuyen);
+            }
+            else
+            {
+                return Ok(0);
+            }
+            
+           
+        }
 
+        [HttpPut("Capnhatthongtinphongkham")]
+        public IActionResult Capnhatthongtinphongkham(CapNhatThongTinPhongKham phongkham)
+        {
+            var checkphongkham = _context.PhongKhams.FirstOrDefault(x => x.IdphongKham == phongkham.IdphongKham);
+
+            if(checkphongkham != null)
+            {
+                checkphongkham.BaoHiem = phongkham.BaoHiem;
+                checkphongkham.TenPhongKham = phongkham.TenPhongKham;
+                checkphongkham.AnhDaiDienPhongKham = phongkham.AnhDaiDienPhongKham;
+                checkphongkham.HinhAnh = phongkham.HinhAnh;
+                checkphongkham.DiaChi = phongkham.DiaChi;
+                checkphongkham.IdxaPhuong = phongkham.IdxaPhuong;
+              
+                _context.SaveChanges();
+                return Ok("Success");
+            }
+            else
+            {
+                return BadRequest("failed");
+            }
+        }
     }
 }

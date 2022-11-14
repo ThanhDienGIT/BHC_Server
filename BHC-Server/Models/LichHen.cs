@@ -10,7 +10,8 @@ namespace BHC_Server.Models
         public string GioHen { get; set; } = null!;
         public DateTime NgayHen { get; set; }
         public string LinkHen { get; set; } = null!;
+        public int? TrangThaiLichHen { get; set; }
 
-        public virtual NguoiDung IdNguoiDungHenLichNavigation { get; set; } = null!;
+        public virtual NguoiDung? IdNguoiDungHenLichNavigation { get; set; } = null;
     }
 }

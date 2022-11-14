@@ -27,16 +27,61 @@ namespace BHC_Server.Controllers
                 }
                 else
                 {
-                    return BadRequest("failed");
+                    return BadRequest("Sai tài khoản hoặc mật khẩu");
                 }
+            }
+            else
+            {
+                return BadRequest("Tài khoản không tồn tạis");
+            }
+
+        }
+
+        [HttpGet("LaydanhsachDatHen")]
+        public IActionResult LaydanhsachDatHen()
+        {
+            var list = from x in _context.LichHens
+                       join c in _context.NguoiDungs on x.IdNguoiDungHenLich equals c.IdNguoiDung
+                       join d in _context.XacThucDangKyMoCoSoYtes on c.IdNguoiDung equals d.IdnguoiDung
+                       select new{
+                           x.IdLichHen,
+                           x.IdNguoiDungHenLich,
+                           x.NgayHen,
+                           x.GioHen,
+                           x.LinkHen,
+                           x.TrangThaiLichHen,
+                           c,
+                           d.LoaiHinhDangKy,
+                       };
+            return Ok(list);    
+        }
+
+        [HttpPost("LuuLichHen")]
+        public IActionResult LuuLichHen(LichHen lichhen)
+        {
+            var checklichhen = _context.LichHens.FirstOrDefault(x => x.IdLichHen == lichhen.IdLichHen);
+
+            if(checklichhen == null)
+            {
+                var a = new LichHen
+                {
+                    IdNguoiDungHenLich = lichhen.IdNguoiDungHenLich,
+                    GioHen = lichhen.GioHen,
+                    NgayHen = lichhen.NgayHen,
+                    LinkHen = lichhen.LinkHen,
+                };
+                _context.LichHens.Add(a);
+                _context.SaveChanges();
+                return Ok("Success");
             }
             else
             {
                 return BadRequest("failed");
             }
 
-        }
 
+            
+        }
 
     }
 }

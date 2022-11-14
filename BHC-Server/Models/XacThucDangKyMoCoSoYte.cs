@@ -5,6 +5,11 @@ namespace BHC_Server.Models
 {
     public partial class XacThucDangKyMoCoSoYte
     {
+        public XacThucDangKyMoCoSoYte()
+        {
+            CacChuyenKhoaChuyenMonDangKies = new HashSet<CacChuyenKhoaChuyenMonDangKy>();
+        }
+
         public int IdxacThucDangKyMoCoSoYte { get; set; }
         public int IdnguoiDung { get; set; }
         public int? IdquanTriVien { get; set; }
@@ -29,5 +34,6 @@ namespace BHC_Server.Models
         public virtual QuanTriVien? IdquanTriVienNavigation { get; set; }
         public virtual LoaiHinhDichVu? LoaiHinhDangKyNavigation { get; set; }
         public virtual XaPhuong? XaPhuongNavigation { get; set; }
+        public virtual ICollection<CacChuyenKhoaChuyenMonDangKy> CacChuyenKhoaChuyenMonDangKies { get; set; }
     }
 }

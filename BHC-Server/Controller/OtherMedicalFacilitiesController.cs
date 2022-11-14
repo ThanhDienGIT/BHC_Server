@@ -152,17 +152,22 @@ namespace BHC_Server.Controller
             }
         }
 
-        [HttpPost("ThemChuyenMonChoNhanVien/{idnhanvien}/{idchuyenkhoa}")]
-        public IActionResult ThemChuyenMonChoNhanVien(string idnhanvien,int idchuyenkhoa) 
+        [HttpPost("ThemChuyenMonChoNhanVien/{idnhanvien}/{idcoso}")]
+        public IActionResult ThemChuyenMonChoNhanVien(string idnhanvien,string idcoso) 
             {
             var checkstaff = _Context.NhanVienCoSos.FirstOrDefault(x => x.IdnhanVienCoSo == idnhanvien);
+
+            var idchuyenmoncoso = (from x in _Context.CoSoDichVuKhacs
+                                   join d in _Context.ChuyenMoncoSos on x.IdcoSoDichVuKhac equals d.IdcoSoDichVuKhac
+                                   where x.IdcoSoDichVuKhac == idcoso
+                                   select d.IdchuyenMonCoSo).FirstOrDefault();
 
                 if(checkstaff != null)
                 {
                     var addchuyenkhoa = new PhanLoaiChuyenKhoaNhanVien
                     {
                         IdnhanVienCoSo = idnhanvien,
-                        ChuyenMoncoSo = idchuyenkhoa,
+                        ChuyenMoncoSo = idchuyenmoncoso,
                     };
 
                     _Context.PhanLoaiChuyenKhoaNhanViens.Add(addchuyenkhoa);
@@ -414,6 +419,7 @@ namespace BHC_Server.Controller
             }
             // Xu ly ID Bac Si
             var IDBacSihientai = idbacsi;
+
             string IDPhongKham = IDBacSihientai.Substring(0, 4);
             var IDBacSi = from a in _Context.CoSoDichVuKhacs
                           join b in _Context.NhanVienCoSos on a.IdcoSoDichVuKhac equals b.IdcoSoDichVuKhac
@@ -447,8 +453,83 @@ namespace BHC_Server.Controller
             };
             _Context.NhanVienCoSos.Add(bacsi);
             _Context.SaveChanges();
-            return Ok(bacsi.IdnhanVienCoSo);
+            return Ok(bacsi.IdcoSoDichVuKhac);
         }
+
+        [HttpGet("Laychuyenmoncuanhanvien/{idnhanvien}")]
+        public IActionResult Laychuyenmoncuanhanvien(string idnhanvien)
+        {
+            var nhanvien = _Context.NhanVienCoSos.Where(x => x.IdnhanVienCoSo == idnhanvien).FirstOrDefault();
+            if(nhanvien != null)
+            {
+                var chuyenmonnhanvien = (from x in _Context.NhanVienCoSos
+                                        join c in _Context.PhanLoaiChuyenKhoaNhanViens on x.IdnhanVienCoSo equals c.IdnhanVienCoSo
+                                        join z in _Context.ChuyenMoncoSos on c.ChuyenMoncoSo equals z.IdchuyenMonCoSo
+                                        join d in _Context.ChuyenMons on z.IdchuyenMon equals d.IdChuyenMon
+                                        where x.IdnhanVienCoSo == idnhanvien
+                                        select new {
+                                            d.IdChuyenMon,
+                                            d.TenChuyenMon,
+                                            x.IdnhanVienCoSo,
+                                        }).FirstOrDefault();
+                if(chuyenmonnhanvien != null)
+                {
+                    return Ok(chuyenmonnhanvien);
+                }
+                else
+                {
+                    return BadRequest("failed");
+                }
+            }
+            
+            var chuyenmon = from x in _Context.NhanVienCoSos
+                            join c in _Context.PhanLoaiChuyenKhoaNhanViens on x.IdnhanVienCoSo equals c.IdnhanVienCoSo
+                            join d in _Context.ChuyenMons on c.ChuyenMoncoSo equals d.IdChuyenMon
+                            where x.IdnhanVienCoSo == idnhanvien
+                            select new
+                            {
+                                x.IdnhanVienCoSo,
+                                d.TenChuyenMon,
+                                d.IdChuyenMon,
+                            };
+            return Ok(chuyenmon);
+        }
+
+
+        [HttpPut("themchuyenmonchonhanvien/{idbacsi}")]
+        public IActionResult themchucdanhbacsi(string idbacsi, List<PhanLoaiChuyenKhoaNhanVien> phanloai)
+        {
+            var listchuyenkhoa = _Context.PhanLoaiChuyenKhoaNhanViens.Where(x => x.IdnhanVienCoSo == idbacsi);
+            if (listchuyenkhoa != null)
+            {
+                _Context.PhanLoaiChuyenKhoaNhanViens.RemoveRange(listchuyenkhoa);
+                var list = new List<PhanLoaiChuyenKhoaNhanVien>();
+                phanloai.ForEach(ele =>
+                {
+                    list.Add(
+                      new PhanLoaiChuyenKhoaNhanVien() { IdnhanVienCoSo = idbacsi, ChuyenMoncoSo = ele.ChuyenMoncoSo }
+                    );
+                });
+                _Context.PhanLoaiChuyenKhoaNhanViens.AddRange(list);
+                _Context.SaveChanges();
+                return Ok(list);
+            }
+            else
+            {
+                var list = new List<PhanLoaiChuyenKhoaNhanVien>();
+                phanloai.ForEach(ele =>
+                {
+                    list.Add(
+                      new PhanLoaiChuyenKhoaNhanVien() { IdnhanVienCoSo = idbacsi, ChuyenMoncoSo = ele.ChuyenMoncoSo }
+                    );
+                });
+                _Context.PhanLoaiChuyenKhoaNhanViens.AddRange(list);
+                _Context.SaveChanges();
+                return Ok(list);
+            }
+        }
+
+
 
 
         [HttpPut("EditDoctor")]

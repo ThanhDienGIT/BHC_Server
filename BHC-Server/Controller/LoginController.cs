@@ -29,12 +29,12 @@ namespace BookingHealthCare_Server.Controllers
                 }
                 else
                 {
-                    return BadRequest("failed");
+                    return BadRequest("Sai tài khoản hoặc mật khẩu");
                 }
             }
             else
             {
-                return BadRequest("failed");
+                return BadRequest("Người dùng không tồn tại");
             }
         }
 
@@ -43,8 +43,9 @@ namespace BookingHealthCare_Server.Controllers
         {
             var a = _Context.NhanVienNhaThuocs.FirstOrDefault(p => p.TaiKhoan == login.UserName);
             var b = _Context.BacSis.FirstOrDefault(p => p.TaiKhoan == login.UserName);
+            var c = _Context.NhanVienCoSos.FirstOrDefault(p => p.TaiKhoan == login.UserName);
             
-            if(a != null)
+            if(a!= null)
             {
                 if (a.MatKhau == login.Password)
                 {
@@ -52,12 +53,13 @@ namespace BookingHealthCare_Server.Controllers
                 }
                 else
                 {
-                    return BadRequest("Wrong Passworld");
+                    return BadRequest("Sai tài khoản hoặc mật khẩu");
                 }
             }
-            else
+            
+            if(b!= null)
             {
-                if(b != null)
+                if (b != null)
                 {
                     if (b.MatKhau == login.Password)
                     {
@@ -65,18 +67,69 @@ namespace BookingHealthCare_Server.Controllers
                     }
                     else
                     {
-                        return BadRequest("Wrong Passworld");
+                        return BadRequest("Sai tài khoản hoặc mật khẩu");
                     }
                 }
-              
             }
-            return BadRequest("Failed");
+
+            if (c != null)
+            {
+                if (c != null)
+                {
+                    if (c.MatKhau == login.Password)
+                    {
+                        return Ok(c.IdnhanVienCoSo);
+                    }
+                    else
+                    {
+                        return BadRequest("Sai tài khoản hoặc mật khẩu");
+                    }
+                }
+            }
+            return BadRequest("Tài khoản không tồn tại");
+        }
+
+
+        [HttpPost("xacthucnguoidung")]
+        public IActionResult xacthucnguoidung(XacThucNguoiDung xacthuc)
+        {
+            var a = _Context.NguoiDungs.FirstOrDefault(p => p.TaiKhoan == xacthuc.UserName);
+            if (a != null)
+            {
+                if(a.XacThuc == true)
+                {
+                    return BadRequest("Tài khoản đã xác thực");
+                }
+
+                if (a.MatKhau == xacthuc.Password)
+                {
+                    if(a.Cccd == xacthuc.Cccd)
+                    {
+                        a.DangNhapLanCuoi = DateTime.Now;
+                        a.XacThuc = true;
+                        _Context.SaveChanges();
+                        return Ok("Success");
+                    }
+                    else
+                    {
+                        return BadRequest("Sai căn cước công dân");
+                    }
+                   
+                }
+                else
+                {
+                    return BadRequest("Sai Tài khoản hoặc Mật khẩu");
+                }
+            }
+            else
+            {
+                return BadRequest("Người dùng không tồn tại");
+            }
         }
 
 
 
         [HttpPost("register")]
-
         public IActionResult Register(Register register)
         {
 
@@ -91,15 +144,15 @@ namespace BookingHealthCare_Server.Controllers
 
             if (email != null)
             {
-                messemail = "dacoemail";
+                messemail = "Email đã được sử dụng";
             }
             if (sodienthoai != null)
             {
-                messsodienthoai = "dacosodienthoai";
+                messsodienthoai = "Số điện thoại đã được sử dụng";
             }
             if (taikhoan != null)
             {
-                messtaikhoan = "dacotaikhoan";
+                messtaikhoan = "Tài khoản đã được sử dụng";
             }
             mess += messemail + " " + messsodienthoai + " " + messtaikhoan;
 
@@ -120,7 +173,7 @@ namespace BookingHealthCare_Server.Controllers
             }
             else
             {
-                return BadRequest(email);
+                return BadRequest(mess);
             }
         }
     }
