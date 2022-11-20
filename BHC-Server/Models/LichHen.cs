@@ -12,6 +12,6 @@ namespace BHC_Server.Models
         public string LinkHen { get; set; } = null!;
         public int? TrangThaiLichHen { get; set; }
 
-        public virtual NguoiDung? IdNguoiDungHenLichNavigation { get; set; } = null;
+        public virtual NguoiDung IdNguoiDungHenLichNavigation { get; set; } = null!;
     }
 }

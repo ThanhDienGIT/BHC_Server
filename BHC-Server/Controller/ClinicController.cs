@@ -156,6 +156,7 @@ namespace BHC_Server.Controller
                        where e.IdbacSi == idbacsi
                        select new
                        {
+                           c.IdchuyenKhoaPhongKham,
                            x.IdphongKham,
                            d.TenChuyenKhoa,
                            d.IdchuyenKhoa,
@@ -197,22 +198,6 @@ namespace BHC_Server.Controller
             return Ok(list);
         }
 
-
-
-        [HttpPost("PhanLoaiBacSi/{idbacsi}")]
-        public IActionResult PhanLoaiBacSi(List<PhanLoaiBacSiChuyenKhoa> phanloai,string idbacsi)
-        {
-            var list = new List<PhanLoaiBacSiChuyenKhoa>();
-            phanloai.ForEach(ele =>
-            {
-                list.Add(
-                  new PhanLoaiBacSiChuyenKhoa(){ IdbacSi = idbacsi , IdchuyenKhoa = ele.IdchuyenKhoa}
-                );
-            });
-           _context.PhanLoaiBacSiChuyenKhoas.AddRange(list);
-           _context.SaveChanges();
-            return Ok(list);     
-        }
 
         [HttpPost("ThemChuyenKhoaChoPhongKham/{idphongkham}")]
         public IActionResult ThemChuyenKhoaChoPhongKham(string idphongkham,List<ChuyenKhoaPhongKham> chuyenkhoa)
@@ -358,12 +343,14 @@ namespace BHC_Server.Controller
         {
             var ListChuyenKhoa = from x in _context.BacSis
                                  join c in _context.PhanLoaiBacSiChuyenKhoas on x.IdbacSi equals c.IdbacSi
-                                 join d in _context.ChuyenKhoas on c.IdchuyenKhoa equals d.IdchuyenKhoa
-                                 join z in _context.PhongKhams on x.IdphongKham equals z.IdphongKham
+                                 join k in _context.ChuyenKhoaPhongKhams on c.IdchuyenKhoa equals k.IdchuyenKhoaPhongKham
+                                 join d in _context.ChuyenKhoas on k.IdchuyenKhoa equals d.IdchuyenKhoa
                                  where x.IdbacSi == idbacsi
                                  select new
                                  {
-                                     z.IdphongKham,
+                                     c.IdphanLoaiBacSiChuyenKhoa,
+                                     x.IdbacSi,
+                                     k.IdchuyenKhoaPhongKham,
                                      d.TenChuyenKhoa,  
                                      d.IdchuyenKhoa,
                                  };        
@@ -400,10 +387,7 @@ namespace BHC_Server.Controller
             var danhsachbacsi = from x in _context.PhongKhams
                                 join BacSi in _context.BacSis on x.IdphongKham equals BacSi.IdphongKham
                                 where x.IdphongKham == idphongkham
-                                select new
-                                {
-                                    BacSi
-                                };
+                                select BacSi;
 
             return Ok(danhsachbacsi);
         }
@@ -505,30 +489,48 @@ namespace BHC_Server.Controller
         }
 
         [HttpPut("EditChuyenKhoaBacSi/{idbacsi}")]
-        public IActionResult EditChuyenKhoaBacSi(string idbacsi,List<PhanLoaiBacSiChuyenKhoa> phanloai)
-        {
-            var listchuyenkhoa = _context.PhanLoaiBacSiChuyenKhoas.Where(x => x.IdbacSi == idbacsi);
-            _context.PhanLoaiBacSiChuyenKhoas.RemoveRange(listchuyenkhoa);
-
-            var list = new List<PhanLoaiBacSiChuyenKhoa>();
-            phanloai.ForEach(ele =>
-            {
-                list.Add(
-                  new PhanLoaiBacSiChuyenKhoa() { IdbacSi = idbacsi, IdchuyenKhoa = ele.IdchuyenKhoa }
-                );
-            });
-            _context.PhanLoaiBacSiChuyenKhoas.AddRange(list);
-            _context.SaveChanges();
-            return Ok(list);
-        }
-
-        [HttpPut("themchucdanhbacsi/{idbacsi}")]
-        public IActionResult themchucdanhbacsi(string idbacsi, List<ChucDanhBacSi> phanloai)
+        public IActionResult EditChuyenKhoaBacSi(string idbacsi,List<ChuyenKhoaPhongKham> phanloai)
         {
             var listchuyenkhoa = _context.PhanLoaiBacSiChuyenKhoas.Where(x => x.IdbacSi == idbacsi);
             if(listchuyenkhoa != null)
             {
                 _context.PhanLoaiBacSiChuyenKhoas.RemoveRange(listchuyenkhoa);
+                var list = new List<PhanLoaiBacSiChuyenKhoa>();
+                phanloai.ForEach(ele =>
+                {
+                    list.Add(
+                      new PhanLoaiBacSiChuyenKhoa() { IdbacSi = idbacsi, IdchuyenKhoa = ele.IdchuyenKhoaPhongKham }
+                    );
+                });
+                _context.PhanLoaiBacSiChuyenKhoas.AddRange(list);
+                  _context.SaveChanges();
+                return Ok(phanloai);
+            }
+            else
+            {
+                var list = new List<PhanLoaiBacSiChuyenKhoa>();
+                phanloai.ForEach(ele =>
+                {
+                    list.Add(
+                      new PhanLoaiBacSiChuyenKhoa() { IdbacSi = idbacsi, IdchuyenKhoa = ele.IdchuyenKhoaPhongKham  }
+                    );
+                });
+                _context.PhanLoaiBacSiChuyenKhoas.AddRange(list);
+                _context.SaveChanges();
+                return Ok(phanloai);
+            }
+            return BadRequest("Failed");
+        }
+
+        [HttpPut("themchucdanhbacsi/{idbacsi}")]
+        public IActionResult themchucdanhbacsi(string idbacsi, List<ChucDanhBacSi> phanloai)
+        {
+            var listchuyenkhoa = _context.ChucDanhBacSis.Where(x => x.IdbacSi == idbacsi);
+
+
+            if(listchuyenkhoa != null)
+            {
+                _context.ChucDanhBacSis.RemoveRange(listchuyenkhoa);
                 var list = new List<ChucDanhBacSi>();
                 phanloai.ForEach(ele =>
                 {
@@ -538,7 +540,7 @@ namespace BHC_Server.Controller
                 });
                 _context.ChucDanhBacSis.AddRange(list);
                 _context.SaveChanges();
-                return Ok(list);
+                return Ok("Có xóa chức danh cũ");
             }
             else
             {
@@ -551,7 +553,7 @@ namespace BHC_Server.Controller
                 });
                 _context.ChucDanhBacSis.AddRange(list);
                 _context.SaveChanges();
-                return Ok(list);
+                return Ok("Chỉ thêm");
             }     
         }
 

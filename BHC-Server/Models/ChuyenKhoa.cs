@@ -10,11 +10,11 @@ namespace BHC_Server.Models
             ChuyenKhoaPhongKhams = new HashSet<ChuyenKhoaPhongKham>();
         }
 
-        public int IdchuyenKhoa { get; set; }
+        public int? IdchuyenKhoa { get; set; } = null;
         public string TenChuyenKhoa { get; set; } = null!;
         public string? Anh { get; set; }
         public string? MoTa { get; set; }
 
-        public virtual ICollection<ChuyenKhoaPhongKham> ChuyenKhoaPhongKhams { get; set; }
+        public virtual ICollection<ChuyenKhoaPhongKham>? ChuyenKhoaPhongKhams { get; set; } = null;
     }
 }

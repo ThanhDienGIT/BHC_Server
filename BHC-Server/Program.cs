@@ -17,10 +17,9 @@ builder.Services.AddCors(p => p.AddPolicy("cors", build =>
 
 builder.Services.AddDbContext<DB_BHCContext>(Option =>
 {
-    Option.UseSqlServer(builder.Configuration.GetConnectionString("DBCon"));
-   
-});
+Option.UseSqlServer(builder.Configuration.GetConnectionString("DBCon"));
 
+});
 
 builder.Services.AddSingleton<EmailHostedService>();
 builder.Services.AddHostedService(provider => provider.GetService<EmailHostedService>());

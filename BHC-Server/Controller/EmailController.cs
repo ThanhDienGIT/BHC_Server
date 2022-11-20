@@ -228,6 +228,39 @@ namespace BHC_Server.Controller
             }
         }
 
+        [HttpPost("datlaimatkhaunew")]
+        public async Task<IActionResult> datlaimatkhau(EmailResetPasswork email)
+        {
+            var ramdom = new Ramdom.Ramdom();
+            var checkmail = _context.NguoiDungs.FirstOrDefault(x => x.Email == email.Email);
+            if (checkmail == null)
+            {
+                return BadRequest("Email không tồn tại");
+            }
+            else
+            {
+                var c = ramdom.GetPassword();
+                checkmail.MatKhau = c;
+                _context.SaveChanges();
+                await _hostedService.SendEmailAsync(new EmailSend.Core.Common.Email.EmailModel
+                {
+                    EmailAddress = checkmail.Email,
+                    Subject = "BookingHealcare xin chào bạn",
+                    Body = "<h2> Chào " + checkmail.HoNguoiDung + " " + checkmail.TenNguoiDung + "</h2> <br>\r\n " +
+                    "<h3 style=\"color:green;\">&emsp; " +
+                    "Mật khẩu của bạn là : " + c + " </h3>  <br>\r\n " +
+                    "<h3>&emsp; Nếu bạn có thắc mắc gì hãy liên hệ :</h3> <br>\r\n " +
+                    " <h4>&emsp;&emsp; Email : thanhdiensett@gmail.com hoặc </h4>\r\n " +
+                    " <h4>&emsp;&emsp; Số điện thoại : 0966631453 </h4> <br>\r\n " +
+                    "<h3> BookingHealthCare</h3>"
+                    ,
+                    Attachments = null
+                });
+                return Ok("success");
+            }
+
+           
+        }
 
 
 

@@ -23,10 +23,14 @@ namespace BHC_Server.Controllers
 
             var SelectAllRegisterFacilities = from xacThuc in _context.XacThucDangKyMoCoSoYtes
                                               join x in _context.NguoiDungs on xacThuc.IdnguoiDung equals x.IdNguoiDung
+                                              join c in _context.XaPhuongs on xacThuc.XaPhuong equals c.IdxaPhuong
+                                              join d in _context.QuanHuyens on c.IdquanHuyen equals d.IdquanHuyen
                                               where xacThuc.TrangThaiXacThuc == 0
                                               select new
                                               {
                                                   xacThuc,
+                                                  c.TenXaPhuong,
+                                                  d.TenQuanHuyen,
                                                   x.IdNguoiDung,
                                                   x.HoNguoiDung,
                                                   x.TenNguoiDung,
@@ -233,6 +237,35 @@ namespace BHC_Server.Controllers
             return Ok("Failed");
         }
 
+        [HttpPost("Themchuyenkhoachobacsichuyenkhoa")]
+        public IActionResult Themchuyenkhoachophongkhamchuyenkhoa(ChuyenKhoaPhongKham chuyenkhoa)
+        {
+            var nhanvien = _context.BacSis.FirstOrDefault(x => x.IdphongKham == chuyenkhoa.IdphongKham);
+            var idchuyenkhoa = (from x in _context.PhongKhams
+                                join c in _context.ChuyenKhoaPhongKhams on x.IdphongKham equals c.IdphongKham
+                                where x.IdphongKham == chuyenkhoa.IdphongKham
+                                select c.IdchuyenKhoaPhongKham).FirstOrDefault();
+
+            if (nhanvien != null)
+            {
+
+                var a = new PhanLoaiBacSiChuyenKhoa
+                {
+                    IdbacSi = nhanvien.IdbacSi,
+                    IdchuyenKhoa = idchuyenkhoa
+                };
+               
+                _context.PhanLoaiBacSiChuyenKhoas.Add(a);
+                _context.SaveChanges();
+                return Ok("Success");
+            }
+            else
+            {
+                return BadRequest("Bác sĩ không tồn tại");
+            }
+
+        }
+
         [HttpPost("Themchuyenkhoachophongkham/{idphongkham}")]
         public IActionResult Themchuyenkhoachophongkham(string idphongkham, List<ChuyenKhoaPhongKham> chuyenkhoa)
         {
@@ -249,14 +282,15 @@ namespace BHC_Server.Controllers
                 });
                 _context.ChuyenKhoaPhongKhams.AddRange(chuyenkhoa);
                 _context.SaveChanges();
-                return Ok("Add success");
+                return Ok(idphongkham);
             }
             else
             {
-                return BadRequest("Failed");
+                return BadRequest("Phòng khám không tồn tại");
             }
 
         }
+
         [HttpPost("ThemChuyenMonChoCoSo/{idcoso}")]
         public IActionResult ThemChuyenMonChoCoSo(string idcoso, List<ChuyenMoncoSo> chuyenmon)
         {
@@ -484,6 +518,7 @@ namespace BHC_Server.Controllers
                 }
 
                 if (Xacthuccoso.LoaiHinhDangKy == 3)
+
                 {
                     IDCoSo = "CSK" + Xacthuccoso.IdnguoiDung;
                     IDNhanVienCoSo = IDCoSo + "1";
@@ -536,14 +571,33 @@ namespace BHC_Server.Controllers
                     var anhcreate6 = path2 + XacThuc.AnhCccdmatSau;
                     var anhcreate7 = path2 + XacThuc.AnhCccdmatTruoc;
 
-                    System.IO.File.Copy(anhdelete1, anhcreate1);
-                    System.IO.File.Copy(anhdelete2, anhcreate2);
-                    System.IO.File.Copy(anhdelete3, anhcreate3);
-                    System.IO.File.Copy(anhdelete4, anhcreate4);
-                    System.IO.File.Copy(anhdelete5, anhcreate5);
-                    System.IO.File.Copy(anhdelete6, anhcreate6);
-                    System.IO.File.Copy(anhdelete7, anhcreate7);
-
+                    if(System.IO.File.Exists(anhcreate1) == false ){
+                        System.IO.File.Copy(anhdelete1, anhcreate1);
+                    }
+                    if (System.IO.File.Exists(anhcreate2) == false)
+                    {
+                        System.IO.File.Copy(anhdelete2, anhcreate2);
+                    }
+                    if (System.IO.File.Exists(anhcreate3) == false)
+                    {
+                        System.IO.File.Copy(anhdelete3, anhcreate3);
+                    }
+                    if (System.IO.File.Exists(anhcreate4) == false)
+                    {
+                        System.IO.File.Copy(anhdelete4, anhcreate4);
+                    }
+                    if (System.IO.File.Exists(anhcreate5) == false)
+                    {
+                        System.IO.File.Copy(anhdelete5, anhcreate5);
+                    }
+                    if (System.IO.File.Exists(anhcreate6) == false)
+                    {
+                        System.IO.File.Copy(anhdelete6, anhcreate6);
+                    }
+                    if (System.IO.File.Exists(anhcreate7) == false)
+                    {
+                        System.IO.File.Copy(anhdelete7, anhcreate7);
+                    }
                     _context.PhongKhams.Add(PhongKham2);
                     _context.BacSis.Add(BacSi2);
                     NguoiDung.TrangThaiPhongKham = true;
@@ -583,6 +637,53 @@ namespace BHC_Server.Controllers
                         IdchuyenMon = Xacthuccoso.idLoaiCoSoYTe,
                         IdcoSoDichVuKhac = Coso.IdcoSoDichVuKhac,
                     };
+
+
+                    string path = "D:\\Build project\\Server\\BHC-Server\\BHC-Server\\Img\\XacThucImg\\";
+                    string path2 = "D:\\Build project\\Server\\BHC-Server\\BHC-Server\\Img\\CoSoYTeImg\\";
+                    var anhdelete1 = path + XacThuc.AnhBangCap;
+                    var anhdelete2 = path + XacThuc.AnhChungChiHanhNghe;
+                    var anhdelete3 = path + XacThuc.AnhDangKyAnhBacSi;
+                    var anhdelete4 = path + XacThuc.AnhGiayChungNhanKinhDoanh;
+                    var anhdelete5 = path + XacThuc.AnhCoSo;
+                    var anhdelete6 = path + XacThuc.AnhCccdmatSau;
+                    var anhdelete7 = path + XacThuc.AnhCccdmatTruoc;
+                    var anhcreate1 = path2 + XacThuc.AnhBangCap;
+                    var anhcreate2 = path2 + XacThuc.AnhChungChiHanhNghe;
+                    var anhcreate3 = path2 + XacThuc.AnhDangKyAnhBacSi;
+                    var anhcreate4 = path2 + XacThuc.AnhGiayChungNhanKinhDoanh;
+                    var anhcreate5 = path2 + XacThuc.AnhCoSo;
+                    var anhcreate6 = path2 + XacThuc.AnhCccdmatSau;
+                    var anhcreate7 = path2 + XacThuc.AnhCccdmatTruoc;
+
+                    if (System.IO.File.Exists(anhcreate1) == false)
+                    {
+                        System.IO.File.Copy(anhdelete1, anhcreate1);
+                    }
+                    if (System.IO.File.Exists(anhcreate2) == false)
+                    {
+                        System.IO.File.Copy(anhdelete2, anhcreate2);
+                    }
+                    if (System.IO.File.Exists(anhcreate3) == false)
+                    {
+                        System.IO.File.Copy(anhdelete3, anhcreate3);
+                    }
+                    if (System.IO.File.Exists(anhcreate4) == false)
+                    {
+                        System.IO.File.Copy(anhdelete4, anhcreate4);
+                    }
+                    if (System.IO.File.Exists(anhcreate5) == false)
+                    {
+                        System.IO.File.Copy(anhdelete5, anhcreate5);
+                    }
+                    if (System.IO.File.Exists(anhcreate6) == false)
+                    {
+                        System.IO.File.Copy(anhdelete6, anhcreate6);
+                    }
+                    if (System.IO.File.Exists(anhcreate7) == false)
+                    {
+                        System.IO.File.Copy(anhdelete7, anhcreate7);
+                    }
                     _context.ChuyenMoncoSos.Add(themchuyenmon);
                     _context.NhanVienCoSos.Add(NhanVienCoSo);
                     NguoiDung.TrangThaiCoSoYte = true;
@@ -616,6 +717,52 @@ namespace BHC_Server.Controllers
                         MatKhau = ramdom.GetPassword(),
                     };
                     NguoiDung.TrangThaiNhaThuoc = true;
+                    string path = "D:\\Build project\\Server\\BHC-Server\\BHC-Server\\Img\\XacThucImg\\";
+                    string path2 = "D:\\Build project\\Server\\BHC-Server\\BHC-Server\\Img\\CoSoYTeImg\\";
+                    var anhdelete1 = path + XacThuc.AnhBangCap;
+                    var anhdelete2 = path + XacThuc.AnhChungChiHanhNghe;
+                    var anhdelete3 = path + XacThuc.AnhDangKyAnhBacSi;
+                    var anhdelete4 = path + XacThuc.AnhGiayChungNhanKinhDoanh;
+                    var anhdelete5 = path + XacThuc.AnhCoSo;
+                    var anhdelete6 = path + XacThuc.AnhCccdmatSau;
+                    var anhdelete7 = path + XacThuc.AnhCccdmatTruoc;
+                    var anhcreate1 = path2 + XacThuc.AnhBangCap;
+                    var anhcreate2 = path2 + XacThuc.AnhChungChiHanhNghe;
+                    var anhcreate3 = path2 + XacThuc.AnhDangKyAnhBacSi;
+                    var anhcreate4 = path2 + XacThuc.AnhGiayChungNhanKinhDoanh;
+                    var anhcreate5 = path2 + XacThuc.AnhCoSo;
+                    var anhcreate6 = path2 + XacThuc.AnhCccdmatSau;
+                    var anhcreate7 = path2 + XacThuc.AnhCccdmatTruoc;
+
+                    if (System.IO.File.Exists(anhcreate1) == false)
+                    {
+                        System.IO.File.Copy(anhdelete1, anhcreate1);
+                    }
+                    if (System.IO.File.Exists(anhcreate2) == false)
+                    {
+                        System.IO.File.Copy(anhdelete2, anhcreate2);
+                    }
+                    if (System.IO.File.Exists(anhcreate3) == false)
+                    {
+                        System.IO.File.Copy(anhdelete3, anhcreate3);
+                    }
+                    if (System.IO.File.Exists(anhcreate4) == false)
+                    {
+                        System.IO.File.Copy(anhdelete4, anhcreate4);
+                    }
+                    if (System.IO.File.Exists(anhcreate5) == false)
+                    {
+                        System.IO.File.Copy(anhdelete5, anhcreate5);
+                    }
+                    if (System.IO.File.Exists(anhcreate6) == false)
+                    {
+                        System.IO.File.Copy(anhdelete6, anhcreate6);
+                    }
+                    if (System.IO.File.Exists(anhcreate7) == false)
+                    {
+                        System.IO.File.Copy(anhdelete7, anhcreate7);
+                    }
+
                     _context.NhaThuocs.Add(NhaThuoc2);
                     _context.NhanVienNhaThuocs.Add(NhanVienNhaThuoc2);
                     _context.SaveChanges();

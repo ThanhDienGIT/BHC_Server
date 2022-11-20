@@ -35,6 +35,7 @@ namespace BHC_Server.Controllers
         public IActionResult GetTypeDoctor()
         {
             var Listdoctor = from s in _context.BacSis
+                             where s.TrangThai == true
                              select new {
                                  s.IdbacSi , s.HoTenBacSi ,s.AnhBacSi,s.Idnguoidung};
             return Ok(Listdoctor);
@@ -192,7 +193,7 @@ namespace BHC_Server.Controllers
         [HttpGet("LayTatCaNhanVienYTeKHac")]
         public IActionResult LayTatCaNhanVienYTeKHac()
         {
-            var listnhanvienytekhac = _context.NhanVienCoSos.ToList();
+            var listnhanvienytekhac = _context.NhanVienCoSos.Where(x=>x.TrangThai == true).ToList();
                 
             return Ok(listnhanvienytekhac);
         }
@@ -202,7 +203,7 @@ namespace BHC_Server.Controllers
         [HttpGet("LayTatCaPhongKham")]
         public IActionResult LaytatcaPhongKham()
         {
-            var listClinic = _context.PhongKhams.ToList();
+            var listClinic = _context.PhongKhams.Where(x=>x.TrangThai == true).ToList();
           
             return Ok(listClinic);
         }

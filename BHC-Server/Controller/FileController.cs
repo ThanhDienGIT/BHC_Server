@@ -51,6 +51,48 @@ namespace BookingHealthCare_Server.Controllers
             return BadRequest("failed save");
         }
 
+        [HttpPost("MultifileChuyenKhoa/{idchuyenkhoa}")]
+        public async Task<IActionResult> MultifileChuyenKhoa(List<IFormFile> files,int idchuyenkhoa)
+        {
+            if (files.Count == 0)
+            {
+                return BadRequest("Failed");
+            }
+
+            foreach (var formFile in files)
+            {
+                if (formFile != null)
+                {
+                    if(idchuyenkhoa == 0)
+                    {
+                        using (var stream = System.IO.File.Create("D:\\Build project\\Server\\BHC-Server\\BHC-Server\\Img\\ChuyenKhoaImg\\"  + formFile.FileName))
+                        {
+                            await formFile.CopyToAsync(stream);
+                            stream.Flush();
+                        }
+                    }
+                    else
+                    {
+                        using (var stream = System.IO.File.Create("D:\\Build project\\Server\\BHC-Server\\BHC-Server\\Img\\ChuyenKhoaImg\\" + idchuyenkhoa + formFile.FileName))
+                        {
+                            await formFile.CopyToAsync(stream);
+                            stream.Flush();
+                        }
+                    }
+                    
+                }
+            }
+
+            if (files.Count != 0)
+            {
+                return Ok("Success");
+            }
+            return BadRequest("Failed");
+            // Process uploaded files
+            // Don't rely on or trust the FileName property without validation.
+        }
+
+
         [HttpPost("Multifile/{idnguoidung}")]
             public async Task<IActionResult> OnPostUploadMultiAsync(List<IFormFile> files,int idnguoidung)
             {
@@ -110,9 +152,39 @@ namespace BookingHealthCare_Server.Controllers
             // Don't rely on or trust the FileName property without validation.
         }
 
+        [HttpPost("Multifileadmin/{idadmin}")]
+        public async Task<IActionResult> Multifileadmin(List<IFormFile> files, string idadmin)
+        {
+            if (files.Count == 0)
+            {
+                return BadRequest("Failed");
+            }
+
+            foreach (var formFile in files)
+            {
+                if (formFile != null)
+                {
+                    using (var stream = System.IO.File.Create("D:\\Build project\\Server\\BHC-Server\\BHC-Server\\Img\\AdminImg\\" + idadmin + formFile.FileName))
+                    {
+                        await formFile.CopyToAsync(stream);
+                        stream.Flush();
+                    }
+                }
+            }
+
+            if (files.Count != 0)
+            {
+                return Ok("Success");
+            }
+            return BadRequest("Failed");
+            // Process uploaded files
+            // Don't rely on or trust the FileName property without validation.
+        }
 
 
-        [HttpGet("{fileName}")]
+
+
+            [HttpGet("{fileName}")]
             public  IActionResult GetImage([FromRoute] string fileName)
             {
                 string path = "D:\\Build project\\Server\\BookingHealthCare-Server\\BookingHealthCare-Server\\Image\\XacThucImg\\";
@@ -125,7 +197,20 @@ namespace BookingHealthCare_Server.Controllers
                 return BadRequest("No Image");
             }
 
-            [HttpGet("Doctor/{fileName}")]
+            [HttpGet("ChuyenKhoa/{fileName}")]
+            public IActionResult ChuyenKhoa([FromRoute] string fileName)
+            {
+                string path = "D:\\Build project\\Server\\BHC-Server\\BHC-Server\\Img\\ChuyenKhoaImg\\";
+                var filepath = path + fileName ;
+                if (System.IO.File.Exists(filepath))
+                {
+                    byte[] b = System.IO.File.ReadAllBytes(filepath);
+                    return File(b, "image/png");
+                }
+                return BadRequest("No Image");
+            }
+
+        [HttpGet("Doctor/{fileName}")]
             public  IActionResult GetImageDoctor([FromRoute] string fileName)
             {
                 string path = "D:\\Build project\\Server\\BHC-Server\\BHC-Server\\Img\\CoSoYTeImg\\";
@@ -151,6 +236,22 @@ namespace BookingHealthCare_Server.Controllers
                 }
                 return BadRequest("No Image");
             }
+
+        [HttpGet("/Admin/{fileName}")]
+        public IActionResult Admin([FromRoute] string fileName)
+        {
+            string path = "D:\\Build project\\Server\\BHC-Server\\BHC-Server\\Img\\AdminImg\\";
+            var filepath = path + fileName;
+            if (System.IO.File.Exists(filepath))
+            {
+                byte[] b = System.IO.File.ReadAllBytes(filepath);
+                return File(b, "image/png");
+            }
+            return BadRequest("No Image");
+        }
+
+
+
         [HttpGet("/AvatarNguoiDung/{fileName}")]
         public IActionResult GetAvatarNguoiDung([FromRoute] string fileName)
         {
@@ -163,6 +264,8 @@ namespace BookingHealthCare_Server.Controllers
             }
             return BadRequest("No Image");
         }
+
+
     }
 }
 

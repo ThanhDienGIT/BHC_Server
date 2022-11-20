@@ -152,16 +152,12 @@ namespace BHC_Server.Controller
             }
         }
 
-        [HttpPost("ThemChuyenMonChoNhanVien/{idnhanvien}/{idcoso}")]
-        public IActionResult ThemChuyenMonChoNhanVien(string idnhanvien,string idcoso) 
+        [HttpPost("ThemChuyenMonChoNhanVien/{idnhanvien}/{idchuyenmoncoso}")]
+        public IActionResult ThemChuyenMonChoNhanVien(string idnhanvien,int idchuyenmoncoso) 
             {
             var checkstaff = _Context.NhanVienCoSos.FirstOrDefault(x => x.IdnhanVienCoSo == idnhanvien);
 
-            var idchuyenmoncoso = (from x in _Context.CoSoDichVuKhacs
-                                   join d in _Context.ChuyenMoncoSos on x.IdcoSoDichVuKhac equals d.IdcoSoDichVuKhac
-                                   where x.IdcoSoDichVuKhac == idcoso
-                                   select d.IdchuyenMonCoSo).FirstOrDefault();
-
+          
                 if(checkstaff != null)
                 {
                     var addchuyenkhoa = new PhanLoaiChuyenKhoaNhanVien
@@ -220,6 +216,14 @@ namespace BHC_Server.Controller
             {
                 return BadRequest("Đã book");
             }
+        }
+
+        [HttpGet("LaydanhsachnhanvienByidcoso/{idcoso}")]
+        public IActionResult LaydanhsachnhanvienByidcoso(string idcoso)
+        {
+            var list = _Context.NhanVienCoSos.Where(x => x.IdcoSoDichVuKhac == idcoso);
+
+            return Ok(list);
         }
 
         [HttpGet("Laydanhsachnhanvien/{idnhanvien}")]
@@ -303,6 +307,80 @@ namespace BHC_Server.Controller
             }
         }
 
+        [HttpGet("LayTongSoLanKhamCuaBacSi/{idbacsi}")]
+        public IActionResult LayTongSoLanKhamCuaBacSi(string idbacsi)
+        {
+            var solankham = from x in _Context.BacSis
+                            join c in _Context.KeHoachKhams on x.IdbacSi equals c.IdbacSi
+                            join d in _Context.DatLiches on c.IdkeHoachKham equals d.IdkeHoachKham
+                            join q in _Context.TaoLiches on d.IddatLich equals q.IddatLich
+                            where x.IdbacSi == idbacsi
+                            select q;
+
+            if(solankham.Count() > 0)
+            {
+                return Ok(solankham.Count());
+            }
+            else
+            {
+                return Ok(0);
+            }
+        }
+
+        [HttpPut("CapNhatMoTa/{idnhanviencoso}")]
+        public IActionResult CapNhatMoTa(CapNhatMoTabacSi mota,string idnhanviencoso)
+        {
+            var checknhanvien = _Context.NhanVienCoSos.FirstOrDefault(x => x.IdnhanVienCoSo == idnhanviencoso);
+            if(checknhanvien != null)
+            {
+                checknhanvien.MoTa = mota.mota;
+                _Context.SaveChanges();
+            }
+
+            return Ok(checknhanvien);
+        }
+
+        [HttpPost("EditNhanVienCoSo")]
+        public IActionResult EditNhanVienCoSo(NhanVienCoSo nhanvien)
+        {
+            var checknhanvien = _Context.NhanVienCoSos.FirstOrDefault(x => x.IdnhanVienCoSo == nhanvien.IdnhanVienCoSo);
+
+            if(checknhanvien != null)
+            {
+                checknhanvien.HoTenNhanVien = nhanvien.HoTenNhanVien;
+                checknhanvien.AnhNhanVien = nhanvien.AnhNhanVien;
+                checknhanvien.AnhChungChiHanhNgheNhanVien = nhanvien.AnhChungChiHanhNgheNhanVien;
+                checknhanvien.Cccd = nhanvien.Cccd;
+                checknhanvien.SoDienThoaiNhanVienCoSo = nhanvien.SoDienThoaiNhanVienCoSo;
+                checknhanvien.EmailNhanVienCoSo = nhanvien.EmailNhanVienCoSo;
+                checknhanvien.GiaDatLich = nhanvien.GiaDatLich;
+                checknhanvien.Idquyen = nhanvien.Idquyen;
+                checknhanvien.GioiTinh = nhanvien.GioiTinh;
+                checknhanvien.MatKhau = nhanvien.MatKhau;
+
+                _Context.SaveChanges();
+                return Ok("success");
+            }
+            return BadRequest("Failed");
+            
+        }
+
+        [HttpGet("LayThongTinNhanVien/{idnhanvien}")]
+        public IActionResult LayThongTinNhanVien(string idnhanvien)
+        {
+            var nhanvien = _Context.NhanVienCoSos.FirstOrDefault(x => x.IdnhanVienCoSo == idnhanvien);
+
+            if(nhanvien != null)
+            {
+                return Ok(nhanvien);
+            }
+            else
+            {
+                return BadRequest("failed");
+            }
+            
+        }
+
         [HttpGet("LayChuyenMonCuaCoSo/{idbacsi}")]
         public IActionResult LayChuyenMonCuaCoSo(string idbacsi)
         {
@@ -311,7 +389,11 @@ namespace BHC_Server.Controller
                        join d in _Context.ChuyenMoncoSos on x.IdcoSoDichVuKhac equals d.IdcoSoDichVuKhac
                        join q in _Context.ChuyenMons on d.IdchuyenMon equals q.IdChuyenMon
                        where c.IdnhanVienCoSo == idbacsi
-                       select q;
+                       select new { 
+                           d.IdchuyenMonCoSo,
+                           q.IdChuyenMon,
+                           q.TenChuyenMon,
+                       };
 
             return Ok(list);
         }
@@ -453,7 +535,7 @@ namespace BHC_Server.Controller
             };
             _Context.NhanVienCoSos.Add(bacsi);
             _Context.SaveChanges();
-            return Ok(bacsi.IdcoSoDichVuKhac);
+            return Ok(bacsi.IdnhanVienCoSo);
         }
 
         [HttpGet("Laychuyenmoncuanhanvien/{idnhanvien}")]
@@ -660,7 +742,6 @@ namespace BHC_Server.Controller
             }
 
         }
-
 
         [HttpPost("HuyLichchokham")]
         public IActionResult HuyLichchokham(DuyetLich duyetlich)

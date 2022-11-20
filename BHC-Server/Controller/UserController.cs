@@ -183,7 +183,5 @@ namespace BookingHealthCare_Server.Controllers
 
             return Ok(ListScheduleUser);
         }
-
-
     }
 }
