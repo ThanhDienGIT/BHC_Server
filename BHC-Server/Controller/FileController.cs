@@ -210,7 +210,7 @@ namespace BookingHealthCare_Server.Controllers
                 return BadRequest("No Image");
             }
 
-        [HttpGet("Doctor/{fileName}")]
+            [HttpGet("Doctor/{fileName}")]
             public  IActionResult GetImageDoctor([FromRoute] string fileName)
             {
                 string path = "D:\\Build project\\Server\\BHC-Server\\BHC-Server\\Img\\CoSoYTeImg\\";

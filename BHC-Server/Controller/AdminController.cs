@@ -266,6 +266,8 @@ namespace BHC_Server.Controllers
         public IActionResult Laytatcacosoyte()
         {
             var list = from x in _context.CoSoDichVuKhacs
+                       join q in _context.ChuyenMoncoSos on x.IdcoSoDichVuKhac equals q.IdcoSoDichVuKhac
+                       join k in _context.ChuyenMons on q.IdchuyenMon equals k.IdChuyenMon
                        join c in _context.NguoiDungs on x.IdnguoiDung equals c.IdNguoiDung
                        join d in _context.XaPhuongs on x.IdxaPhuong equals d.IdxaPhuong
                        join e in _context.QuanHuyens on d.IdquanHuyen equals e.IdquanHuyen
@@ -281,7 +283,8 @@ namespace BHC_Server.Controllers
                            d.TenXaPhuong,
                            e.TenQuanHuyen,
                            c.HoNguoiDung,
-                           c.TenNguoiDung
+                           c.TenNguoiDung,
+                           k.TenChuyenMon,
                        };
             return Ok(list);
         }
@@ -451,5 +454,156 @@ namespace BHC_Server.Controllers
                 return BadRequest("Chuyên khoa không tồn tại");
             }
         }
+
+
+        [HttpGet("Laydanhsachchuyenmon")]
+        public IActionResult Laydanhsachchuyenmon()
+        {
+            var list = _context.ChuyenMons.ToList();
+
+            return Ok(list);
+        }
+
+
+        [HttpPost("AddSpecializelist")]
+        public IActionResult AddSpecializelist(ChuyenMon chuyenmon)
+        {
+            var checkchuyenkhoa = _context.ChuyenMons.FirstOrDefault(x => x.TenChuyenMon == chuyenmon.TenChuyenMon);
+
+            if (checkchuyenkhoa == null)
+            {
+                var addspecialist = new ChuyenMon
+                {
+                    IdChuyenMon = chuyenmon.IdChuyenMon,
+                    TenChuyenMon = chuyenmon.TenChuyenMon,
+                    AnhChuyeMon = chuyenmon.AnhChuyeMon,
+                    MoTaChuyenMon = chuyenmon.MoTaChuyenMon,
+                };
+                _context.ChuyenMons.Add(addspecialist);
+                _context.SaveChanges();
+                return Ok(addspecialist.IdChuyenMon);
+            }
+            else
+            {
+                return BadRequest("Đã có chuyên khoa");
+            }
+        }
+        [HttpPut("EditSpecializelist")]
+        public IActionResult EditSpecializelist(ChuyenMon chuyenmon)
+        {
+            var checkchuyenkhoa = _context.ChuyenMons.FirstOrDefault(x => x.IdChuyenMon == chuyenmon.IdChuyenMon);
+            var k = _context.ChuyenKhoas.ToList();
+
+            foreach (var x in k)
+            {
+                if (chuyenmon.TenChuyenMon == x.TenChuyenKhoa && chuyenmon.TenChuyenMon != checkchuyenkhoa.TenChuyenMon)
+                {
+                    return BadRequest("Chuyên khoa đã tồn tại");
+                }
+            }
+
+
+            if (checkchuyenkhoa != null)
+            {
+
+                checkchuyenkhoa.TenChuyenMon = chuyenmon.TenChuyenMon;
+                checkchuyenkhoa.AnhChuyeMon = chuyenmon.AnhChuyeMon;
+                checkchuyenkhoa.MoTaChuyenMon = chuyenmon.MoTaChuyenMon;
+
+                _context.SaveChanges();
+                return Ok(checkchuyenkhoa.IdChuyenMon);
+            }
+            else
+            {
+                return BadRequest("Chuyên khoa không tồn tại");
+            }
+        }
+
+
+
+        [HttpDelete("xoachuyenmon/{idchuyenmon}")]
+        public IActionResult xoachuyenmon(int idchuyenmon)
+        {
+            var checkchuyenkhoa = _context.ChuyenMons.FirstOrDefault(x => x.IdChuyenMon == idchuyenmon);
+
+            if (checkchuyenkhoa != null)
+            {
+                var getlistdoctorforchuyenkhoa = (from x in _context.ChuyenMons
+                                                  join c in _context.ChuyenMoncoSos on x.IdChuyenMon equals c.IdchuyenMon
+                                                  select x.IdChuyenMon).Distinct();
+                if (getlistdoctorforchuyenkhoa != null)
+                {
+                    foreach (var x in getlistdoctorforchuyenkhoa)
+                    {
+                        if (x == idchuyenmon)
+                        {
+                            return BadRequest("Chuyên môn đã có cơ sở đăng ký");
+                        }
+                    }
+                    _context.ChuyenMons.Remove(checkchuyenkhoa);
+                    _context.SaveChanges();
+                    return Ok("Xóa thành công");
+                }
+                else
+                {
+                    return BadRequest("Chưa có chuyên môn nào sao mà xóa");
+                }
+            }
+            else
+            {
+                return BadRequest("Chuyên môn không tồn tại");
+            }
+        }
+
+
+        [HttpGet("laytatcaphongkhamstatistical")]
+        public IActionResult laytatcaphongkhamstatistical()
+        {
+            var list = from x in _context.PhongKhams
+                       join k in _context.NguoiDungs on x.IdnguoiDung equals k.IdNguoiDung
+                       select new
+                       {
+                           x,
+                           k.HoNguoiDung,
+                           k.TenNguoiDung,
+                       };
+
+            return Ok(list);
+        }
+
+        [HttpGet("LayTatCaSoLanDatLichCuaPhongKham/{idphongkham}")]
+        public IActionResult LayTatCaSoLanDatLichCuaPhongKham(string idphongkham)
+        {
+            var danhsach = from x in _context.PhongKhams
+                           join c in _context.BacSis on x.IdphongKham equals c.IdphongKham
+                           join q in _context.KeHoachKhams on c.IdbacSi equals q.IdbacSi
+                           join w in _context.DatLiches on q.IdkeHoachKham equals w.IdkeHoachKham
+                           join y in _context.TaoLiches on w.IddatLich equals y.IddatLich
+                           where x.IdphongKham == idphongkham && y.TrangThaiTaoLich == 3
+                           select new
+                           {
+                               c.HoTenBacSi,
+                               c.GiaKham,
+                           };
+            return Ok(danhsach);
+        }
+
+        [HttpGet("laytatcacosostatistical")]
+        public IActionResult laytatcacosostatistical()
+        {
+            var list = from x in _context.CoSoDichVuKhacs
+                       join c in _context.NguoiDungs on x.IdnguoiDung equals c.IdNguoiDung
+                       select new
+                       {
+                           x,
+                           c.HoNguoiDung,
+                           c.TenNguoiDung,
+                       };
+
+            return Ok(list);
+        }
+
+
+
     }
 }

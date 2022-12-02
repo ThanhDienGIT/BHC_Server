@@ -7,6 +7,7 @@ namespace BHC_Server.Models
     {
         public NhanVienCoSo()
         {
+            DanhGiaCosos = new HashSet<DanhGiaCoso>();
             KeHoachNhanVienCoSos = new HashSet<KeHoachNhanVienCoSo>();
             PhanLoaiChuyenKhoaNhanViens = new HashSet<PhanLoaiChuyenKhoaNhanVien>();
         }
@@ -19,18 +20,21 @@ namespace BHC_Server.Models
         public string EmailNhanVienCoSo { get; set; } = null!;
         public int? Idquyen { get; set; }
         public decimal? GiaDatLich { get; set; }
-        public string TaiKhoan { get; set; } = null!;
+        public string? TaiKhoan { get; set; } = null;
         public string MatKhau { get; set; } = null!;
         public bool GioiTinh { get; set; }
         public string? AnhNhanVien { get; set; }
         public string AnhChungChiHanhNgheNhanVien { get; set; } = null!;
         public int? Idnguoidung { get; set; }
         public string? MoTa { get; set; }
+        public double? Danhgia { get; set; }
+        public int? Solandatlich { get; set; }
         public bool? TrangThai { get; set; }
 
         public virtual CoSoDichVuKhac? IdcoSoDichVuKhacNavigation { get; set; }
         public virtual NguoiDung? IdnguoidungNavigation { get; set; }
         public virtual Quyen? IdquyenNavigation { get; set; }
+        public virtual ICollection<DanhGiaCoso> DanhGiaCosos { get; set; }
         public virtual ICollection<KeHoachNhanVienCoSo> KeHoachNhanVienCoSos { get; set; }
         public virtual ICollection<PhanLoaiChuyenKhoaNhanVien> PhanLoaiChuyenKhoaNhanViens { get; set; }
     }

@@ -8,6 +8,7 @@ namespace BHC_Server.Models
         public CoSoDichVuKhac()
         {
             ChuyenMoncoSos = new HashSet<ChuyenMoncoSo>();
+            DanhGiaCosos = new HashSet<DanhGiaCoso>();
             NhanVienCoSos = new HashSet<NhanVienCoSo>();
         }
 
@@ -24,11 +25,14 @@ namespace BHC_Server.Models
         public int IdxaPhuong { get; set; }
         public string? MoTa { get; set; }
         public bool? TrangThai { get; set; }
+        public double? Danhgia { get; set; }
+        public int? Solandatlich { get; set; }
         public DateTime? NgayMoCoSo { get; set; }
 
         public virtual NguoiDung? IdnguoiDungNavigation { get; set; }
         public virtual XaPhuong IdxaPhuongNavigation { get; set; } = null!;
         public virtual ICollection<ChuyenMoncoSo> ChuyenMoncoSos { get; set; }
+        public virtual ICollection<DanhGiaCoso> DanhGiaCosos { get; set; }
         public virtual ICollection<NhanVienCoSo> NhanVienCoSos { get; set; }
     }
 }

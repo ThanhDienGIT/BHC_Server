@@ -23,9 +23,17 @@ namespace BookingHealthCare_Server.Controllers
             {
                 if (a.MatKhau == login.Password)
                 {
-                    a.DangNhapLanCuoi = DateTime.Now;
-                    _Context.SaveChanges();
-                    return Ok(a.IdNguoiDung);
+                    if(a.TrangThaiNguoiDung == true)
+                    {
+                        a.DangNhapLanCuoi = DateTime.Now;
+                        _Context.SaveChanges();
+                        return Ok(a.IdNguoiDung);
+                    }
+                    else
+                    {
+                        return BadRequest("Tài khoản đã bị khóa");
+                    }
+                    
                 }
                 else
                 {
@@ -41,29 +49,34 @@ namespace BookingHealthCare_Server.Controllers
         [HttpPost("LoginFacilities")]
         public IActionResult LoginFacilities(Login login)
         {
-            var a = _Context.NhanVienNhaThuocs.FirstOrDefault(p => p.TaiKhoan == login.UserName);
-            var b = _Context.BacSis.FirstOrDefault(p => p.TaiKhoan == login.UserName);
-            var c = _Context.NhanVienCoSos.FirstOrDefault(p => p.TaiKhoan == login.UserName);
-            
-            if(a!= null)
-            {
-                if (a.MatKhau == login.Password)
-                {
-                    return Ok(a.IdnhanVienNhaThuoc);
-                }
-                else
-                {
-                    return BadRequest("Sai tài khoản hoặc mật khẩu");
-                }
-            }
-            
-            if(b!= null)
+
+
+            var b = (from x in _Context.BacSis
+                     join z in _Context.PhongKhams on x.IdphongKham equals z.IdphongKham
+                     where x.TaiKhoan == login.UserName && z.TrangThai == true
+                     select x).FirstOrDefault();
+
+
+            var c = (from x in _Context.NhanVienCoSos
+                    join z in _Context.CoSoDichVuKhacs on x.IdcoSoDichVuKhac equals z.IdcoSoDichVuKhac
+                    where x.TaiKhoan == login.UserName && z.TrangThai == true
+                    select x).FirstOrDefault();
+
+            if (b!= null)
             {
                 if (b != null)
                 {
                     if (b.MatKhau == login.Password)
                     {
-                        return Ok(b.IdbacSi);
+                        if(b.TrangThai == true)
+                        {
+                            return Ok(b.IdbacSi);
+                        }
+                        else
+                        {
+                            return BadRequest("Tài khoản bị khóa");
+                        }
+                       
                     }
                     else
                     {
@@ -78,7 +91,15 @@ namespace BookingHealthCare_Server.Controllers
                 {
                     if (c.MatKhau == login.Password)
                     {
-                        return Ok(c.IdnhanVienCoSo);
+                        if(c.TrangThai == true)
+                        {
+                            return Ok(c.IdnhanVienCoSo);
+                        }
+                        else
+                        {
+                            return BadRequest("Tài khoản bị khóa");
+                        }
+                        
                     }
                     else
                     {
@@ -87,6 +108,26 @@ namespace BookingHealthCare_Server.Controllers
                 }
             }
             return BadRequest("Tài khoản không tồn tại");
+        }
+
+        [HttpGet("checktypestaff/{idstaff}")]
+        public IActionResult checktypestaff(string idstaff)
+        {
+            var checkbacsi = _Context.BacSis.FirstOrDefault(x => x.IdbacSi == idstaff);
+            var checknhanvien = _Context.NhanVienCoSos.FirstOrDefault(x => x.IdnhanVienCoSo == idstaff);
+            int number = 0;
+
+            if(checkbacsi != null)
+            {
+                number = 1;
+            }
+
+            if(checknhanvien != null)
+            {
+                number = 2;
+            }
+
+            return Ok(number);
         }
 
 

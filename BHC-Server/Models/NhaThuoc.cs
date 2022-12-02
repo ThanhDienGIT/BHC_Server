@@ -17,8 +17,11 @@ namespace BHC_Server.Models
         public int? IdxaPhuong { get; set; }
         public string DiaChi { get; set; } = null!;
         public string? MoTa { get; set; }
+        public string? Anhnhathuoc { get; set; }
         public int? IdLoaiHinhDichVu { get; set; }
         public DateTime? NgayMoNhaThuoc { get; set; }
+        public double? DanhGia { get; set; }
+        public int? SoLanDatMua { get; set; }
         public bool? TrangThai { get; set; }
 
         public virtual LoaiHinhDichVu? IdLoaiHinhDichVuNavigation { get; set; }

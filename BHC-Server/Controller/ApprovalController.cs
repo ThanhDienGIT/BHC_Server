@@ -102,21 +102,21 @@ namespace BHC_Server.Controllers
         [HttpPost("CheckDatLich")]
         public async Task<IActionResult> CheckDatLich(TaoLich taoLich)
         {
-            var CheckDatLich = _context.TaoLiches
-                               .FirstOrDefault(x => x.IddatLich == taoLich.IddatLich && x.IdnguoiDungDatLich == taoLich.IdnguoiDungDatLich);
+            var CheckDatLich = _context.TaoLiches.FirstOrDefault(x => x.IddatLich == taoLich.IddatLich && x.IdnguoiDungDatLich == taoLich.IdnguoiDungDatLich);
             var datlich = _context.DatLiches.FirstOrDefault(x => x.IddatLich == taoLich.IddatLich);
+            
             var nguoidung = _context.NguoiDungs.FirstOrDefault(x => x.IdNguoiDung == taoLich.IdnguoiDungDatLich);
 
             if (CheckDatLich == null && datlich != null && nguoidung != null)
-            {
-                if (datlich.SoLuongHienTai >= datlich.SoLuongToiDa)
-                {
-                    return Ok("Đã hết chỗ");
-                }
-                else
-                {
-                    return Ok("Success");
-                }
+            {         
+                    if (datlich.SoLuongHienTai >= datlich.SoLuongToiDa)
+                    {
+                        return Ok("Đã hết chỗ");
+                    }
+                    else
+                    {
+                        return Ok("Success");
+                    }
             }
             else
             {

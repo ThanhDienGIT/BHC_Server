@@ -33,13 +33,7 @@ namespace BookingHealthCare_Server.Controllers
  
             
             }
-        // xoa
-        [HttpGet("GetListBooking/{iduser}")]
-        public IActionResult GetListBookingByIDUser(int iduser)
-        {
 
-                return BadRequest("No booking");   
-        }
         [HttpPut]
         public IActionResult ChangeInfoUser(ChangeUser user)
         {
@@ -172,10 +166,12 @@ namespace BookingHealthCare_Server.Controllers
                                        x.TrangThaiKeHoachKham,
                                        c.ThoiGianDatLich,
                                        c.TrangThaiDatLich,
+                                       c.IddatLich,
                                        d.NgayGioDatLich,
                                        d.LyDoKham,
                                        d.TrangThaiTaoLich,
                                        e.SoDienThoaiBacSi,
+                                       e.IdbacSi,
                                        e.HoTenBacSi,
                                        e.GiaKham,
                                        k.DiaChi,
@@ -183,5 +179,369 @@ namespace BookingHealthCare_Server.Controllers
 
             return Ok(ListScheduleUser);
         }
+
+        [HttpPut("thaydoilich/{iddatlichcu}/{iddatlichmoi}")]
+        public IActionResult thaydoilich(int iddatlichcu,int iddatlichmoi)
+        {
+            var thaydoilich = _Context.TaoLiches.FirstOrDefault(x => x.IddatLich == iddatlichcu);
+            var lichcu = _Context.DatLiches.FirstOrDefault(x => x.IddatLich == iddatlichcu);
+            var lichmoi = _Context.DatLiches.FirstOrDefault(x => x.IddatLich == iddatlichmoi);
+            if(thaydoilich != null && lichcu != null && lichmoi != null)
+            {
+                lichmoi.SoLuongHienTai++;
+                lichcu.SoLuongHienTai--;
+                thaydoilich.IddatLich = iddatlichmoi;
+                _Context.SaveChanges();
+                return Ok("success");
+            }
+            else
+            {
+                return BadRequest("Lịch không tồn tại");
+
+            }
+        }
+
+
+        [HttpGet("checkdanhgiabacsi/{idnguoidung}/{idbacsi}")]
+        public IActionResult checkdanhgiabacsi(int idnguoidung, string idbacsi)
+        {
+            var check = from x in _Context.NguoiDungs
+                        join d in _Context.TaoLiches on x.IdNguoiDung equals d.IdnguoiDungDatLich
+                        join e in _Context.DatLiches on d.IddatLich equals e.IddatLich
+                        join b in _Context.KeHoachKhams on e.IdkeHoachKham equals b.IdkeHoachKham
+                        join c in _Context.BacSis on b.IdbacSi equals c.IdbacSi
+                        where x.IdNguoiDung == idnguoidung && c.IdbacSi == idbacsi && d.TrangThaiTaoLich == 3
+                        select d;
+            if (check.Count() > 0)
+            {
+                return Ok("success");
+            }
+            else
+            {
+                return BadRequest("Không được đánh giá");
+            }
+        }
+
+        [HttpGet("checkdanhgiaphongkham/{idnguoidung}/{idphongkham}")]
+        public IActionResult checkdanhgiaphongkham(int idnguoidung, string idphongkham)
+        {
+            var check = from x in _Context.NguoiDungs
+                        join d in _Context.TaoLiches on x.IdNguoiDung equals d.IdnguoiDungDatLich
+                        join e in _Context.DatLiches on d.IddatLich equals e.IddatLich
+                        join b in _Context.KeHoachKhams on e.IdkeHoachKham equals b.IdkeHoachKham
+                        join c in _Context.BacSis on b.IdbacSi equals c.IdbacSi
+                        join n in _Context.PhongKhams on c.IdphongKham equals n.IdphongKham
+                        where x.IdNguoiDung == idnguoidung && n.IdphongKham == idphongkham && d.TrangThaiTaoLich == 3
+                        select d;
+            if (check.Count() > 0)
+            {
+                return Ok("success");
+            }
+            else
+            {
+                return BadRequest("Không được đánh giá");
+            }
+        }
+
+
+        [HttpGet("checkdanhgianhanviencoso/{idnguoidung}/{idnhanvien}")]
+        public IActionResult checkdanhgianhanviencoso(int idnguoidung, string idnhanvien)
+        {
+            var check = from x in _Context.NguoiDungs
+                        join d in _Context.TaoLichNhanVienCoSos on x.IdNguoiDung equals d.IdnguoiDungDatLich
+                        join e in _Context.DatLichNhanVienCoSos on d.IddatLichNhanVienCoSo equals e.IddatLichNhanVienCoSo
+                        join b in _Context.KeHoachNhanVienCoSos on e.IdkeHoachNhanVienCoSo equals b.IdkeHoachNhanVienCoSo
+                        join c in _Context.NhanVienCoSos on b.IdnhanVienCoSo equals c.IdnhanVienCoSo
+                        where x.IdNguoiDung == idnguoidung && c.IdnhanVienCoSo == idnhanvien && d.TrangThaiTaoLich == 3
+                        select d;
+            if (check.Count() > 0)
+            {
+                return Ok("success");
+            }
+            else
+            {
+                return BadRequest("Không được đánh giá");
+            }
+        }
+
+        [HttpGet("checkdanhgiacoso/{idnguoidung}/{idcoso}")]
+        public IActionResult checkdanhgiacoso(int idnguoidung, string idcoso)
+        {
+            var check = from x in _Context.NguoiDungs
+                        join d in _Context.TaoLichNhanVienCoSos on x.IdNguoiDung equals d.IdnguoiDungDatLich
+                        join e in _Context.DatLichNhanVienCoSos on d.IddatLichNhanVienCoSo equals e.IddatLichNhanVienCoSo
+                        join b in _Context.KeHoachNhanVienCoSos on e.IdkeHoachNhanVienCoSo equals b.IdkeHoachNhanVienCoSo
+                        join c in _Context.NhanVienCoSos on b.IdnhanVienCoSo equals c.IdnhanVienCoSo
+                        join q in _Context.CoSoDichVuKhacs on c.IdcoSoDichVuKhac equals q.IdcoSoDichVuKhac
+                        where x.IdNguoiDung == idnguoidung && q.IdcoSoDichVuKhac == idcoso && d.TrangThaiTaoLich == 3
+                        select d;
+            
+            if (check.Count() > 0)
+            {
+                return Ok("success");
+            }
+            else
+            {
+                return BadRequest("Không được đánh giá");
+            }
+        }
+
+        [HttpPost("danhgia/{id}/{idnguoidung}")]
+        public IActionResult danhgia(DanhGiaCuaNguoiDung sosao,string id,int idnguoidung)
+        {
+            var checkbacsi = _Context.BacSis.FirstOrDefault(x => x.IdbacSi == id);
+            var checknhanviencoso = _Context.NhanVienCoSos.FirstOrDefault(x => x.IdnhanVienCoSo == id);
+            var checkphongkham = _Context.PhongKhams.FirstOrDefault(x => x.IdphongKham == id);
+            var checkcoso = _Context.CoSoDichVuKhacs.FirstOrDefault(x => x.IdcoSoDichVuKhac == id);
+
+            var checkdanhgiabacsi = _Context.DanhGiaCosos
+                .FirstOrDefault(x => x.IdbacSi == id && x.Idnguoidanhgia == idnguoidung);
+            var checkdanhgianhanvien = _Context.DanhGiaCosos
+                .FirstOrDefault(x => x.IdnhanVienCoSo == id && x.Idnguoidanhgia == idnguoidung);
+            var checkdanhgiaphongkham = _Context.DanhGiaCosos
+                .FirstOrDefault(x => x.IdphongKham == id && x.Idnguoidanhgia == idnguoidung);
+            var checkdanhgiacoso = _Context.DanhGiaCosos
+                .FirstOrDefault(x => x.IdcoSoDichVuKhac == id && x.Idnguoidanhgia == idnguoidung);
+
+            if (checkbacsi != null && checkdanhgiabacsi == null)
+            {
+              if(checkbacsi.Danhgia == 0)
+              {
+                    var danhgia = new DanhGiaCoso
+                    {
+                        IdbacSi = id,
+                        Idnguoidanhgia = idnguoidung,
+                        SoSao = sosao.sosao,
+                        NhanXet = sosao.nhanxet,
+                    };
+                    _Context.DanhGiaCosos.Add(danhgia);
+                    checkbacsi.Danhgia += sosao.sosao;
+                    _Context.SaveChanges();
+                    return Ok("success");
+              }
+              if(checkbacsi.Danhgia > 0)
+                {
+                    var listdanhgia = _Context.DanhGiaCosos.Where(x=>x.IdbacSi == id).ToList();
+                    int tongso = listdanhgia.Count();
+                    double tonggiatri = 0.0;
+                    foreach(var x in listdanhgia)
+                    {
+                        tonggiatri += x.SoSao;
+                    }
+                    tonggiatri += sosao.sosao;
+                    double danhgiabacsi = tonggiatri / (tongso + 1);
+
+                    var danhgia = new DanhGiaCoso
+                    {
+                        IdbacSi = id,
+                        Idnguoidanhgia = idnguoidung,
+                        SoSao = sosao.sosao,
+                        NhanXet = sosao.nhanxet,
+                    };
+                    _Context.DanhGiaCosos.Add(danhgia);
+                    checkbacsi.Danhgia = danhgiabacsi;
+                    _Context.SaveChanges();
+                    return Ok("success");
+                }
+            }
+            // nhanvien
+            if (checknhanviencoso != null && checkdanhgianhanvien == null)
+            {
+                if (checknhanviencoso.Danhgia == 0)
+                {
+                    var danhgia = new DanhGiaCoso
+                    {
+                        IdnhanVienCoSo = id,
+                        Idnguoidanhgia = idnguoidung,
+                        SoSao = sosao.sosao,
+                        NhanXet= sosao.nhanxet,
+                    };
+                    _Context.DanhGiaCosos.Add(danhgia);
+                    checknhanviencoso.Danhgia += sosao.sosao;
+                    _Context.SaveChanges();
+                    return Ok("success");
+                }
+                if (checknhanviencoso.Danhgia > 0)
+                {
+                    var listdanhgia = _Context.DanhGiaCosos.Where(x => x.IdnhanVienCoSo == id).ToList();
+                    int tongso = listdanhgia.Count();
+                    double tonggiatri = 0.0;
+                    foreach (var x in listdanhgia)
+                    {
+                        tonggiatri += x.SoSao;
+                    }
+                    tonggiatri += sosao.sosao;
+                    double danhgiabacsi = tonggiatri / (tongso + 1);
+
+                    var danhgia = new DanhGiaCoso
+                    {
+                        IdnhanVienCoSo = id,
+                        Idnguoidanhgia = idnguoidung,
+                        SoSao = sosao.sosao,
+                        NhanXet = sosao.nhanxet
+                    };
+                    _Context.DanhGiaCosos.Add(danhgia);
+                    checknhanviencoso.Danhgia = danhgiabacsi;
+                    _Context.SaveChanges();
+                    return Ok("success");
+                }
+            }
+            if (checkphongkham != null && checkdanhgiaphongkham == null)
+            {
+                if (checkphongkham.Danhgia == 0)
+                {
+                    var danhgia = new DanhGiaCoso
+                    {
+                        IdphongKham = id,
+                        Idnguoidanhgia = idnguoidung,
+                        SoSao = sosao.sosao,
+                        NhanXet = sosao.nhanxet,
+                    };
+                    _Context.DanhGiaCosos.Add(danhgia);
+                    checkphongkham.Danhgia += sosao.sosao;
+                    _Context.SaveChanges();
+                    return Ok("success");
+                }
+                if (checkphongkham.Danhgia > 0)
+                {
+                    var listdanhgia = _Context.DanhGiaCosos.Where(x => x.IdphongKham == id).ToList();
+                    int tongso = listdanhgia.Count();
+                    double tonggiatri = 0.0;
+                    foreach (var x in listdanhgia)
+                    {
+                        tonggiatri += x.SoSao;
+                    }
+                    tonggiatri += sosao.sosao;
+                    double danhgiabacsi = tonggiatri / (tongso + 1);
+
+                    var danhgia = new DanhGiaCoso
+                    {
+                        IdphongKham = id,
+                        Idnguoidanhgia = idnguoidung,
+                        SoSao = sosao.sosao,
+                        NhanXet = sosao.nhanxet,
+                    };
+                    _Context.DanhGiaCosos.Add(danhgia);
+                    checkphongkham.Danhgia = danhgiabacsi;
+                    _Context.SaveChanges();
+                    return Ok("success");
+                }
+            }
+            if (checkcoso != null && checkdanhgiacoso == null)
+            {
+                if (checkcoso.Danhgia == 0)
+                {
+                    var danhgia = new DanhGiaCoso
+                    {
+                        IdcoSoDichVuKhac = id,
+                        Idnguoidanhgia = idnguoidung,
+                        SoSao = sosao.sosao,
+                        NhanXet = sosao.nhanxet,
+                    };
+                    _Context.DanhGiaCosos.Add(danhgia);
+                    checkcoso.Danhgia += sosao.sosao;
+                    _Context.SaveChanges();
+                    return Ok("success");
+                }
+                if (checkcoso.Danhgia > 0)
+                {
+                    var listdanhgia = _Context.DanhGiaCosos.Where(x => x.IdcoSoDichVuKhac == id).ToList();
+                    int tongso = listdanhgia.Count();
+                    double tonggiatri = 0.0;
+                    foreach (var x in listdanhgia)
+                    {
+                        tonggiatri += x.SoSao;
+                    }
+                    tonggiatri += sosao.sosao;
+                    double danhgiabacsi = tonggiatri / (tongso + 1);
+
+                    var danhgia = new DanhGiaCoso
+                    {
+                        IdcoSoDichVuKhac = id,
+                        Idnguoidanhgia = idnguoidung,
+                        SoSao = sosao.sosao,
+                        NhanXet = sosao.nhanxet,
+                    };
+                    _Context.DanhGiaCosos.Add(danhgia);
+                    checkcoso.Danhgia = danhgiabacsi;
+                    _Context.SaveChanges();
+                    return Ok("success");
+                }
+            }
+
+            return BadRequest("failed");
+        }
+
+        [HttpPost("Thaydoimatkhaunguoidung/{idnguoidung}/{matkhaumoi}")]
+        public IActionResult Thaydoimatkhaunguoidung(int idnguoidung,string matkhaumoi)
+        {
+            var nguoidung = _Context.NguoiDungs.FirstOrDefault(x => x.IdNguoiDung == idnguoidung);
+
+            if(nguoidung != null)
+            {
+                nguoidung.MatKhau = matkhaumoi;
+                _Context.SaveChanges();
+                return Ok("Success");
+            }
+
+
+            return BadRequest("Failed");
+        }
+
+        [HttpGet("laytatcabacsi")]
+        public IActionResult laytatcabacsi()
+        {
+            var list = from x in _Context.BacSis
+                       join c in _Context.PhongKhams on x.IdphongKham equals c.IdphongKham
+                       where x.TrangThai == true && c.TrangThai == true
+                       select x;
+                       
+            return Ok(list);
+        }
+
+        [HttpGet("laytatcanhanvienyte")]
+        public IActionResult laytatcanhanvienyte()
+        {
+            var list = from x in _Context.NhanVienCoSos
+                       join c in _Context.CoSoDichVuKhacs on x.IdcoSoDichVuKhac equals c.IdcoSoDichVuKhac
+                       where x.TrangThai == true && c.TrangThai == true
+                       select x;
+
+            return Ok(list);
+        }
+
+        [HttpGet("laytatcaphongkham")]
+        public IActionResult laytatcaphongkham()
+        {
+            var list = _Context.PhongKhams.Where(x => x.TrangThai == true);
+
+            return Ok(list);
+        }
+
+        [HttpGet("laytatcacoso")]
+        public IActionResult laytatcacoso()
+        {
+            var list = _Context.CoSoDichVuKhacs.Where(x => x.TrangThai == true);
+                       
+
+            return Ok(list);
+        }
+
+        [HttpGet("laytatcachuyenkhoa")]
+        public IActionResult laytatcachuyenkhoa()
+        {
+            var list = _Context.ChuyenKhoas.ToList();
+
+            return Ok(list);
+        }
+
+        [HttpGet("laytatcachuyenmon")]
+        public IActionResult laytatcachuyenmon()
+        {
+            var list = _Context.ChuyenMons.ToList();
+
+            return Ok(list);
+        }
+
     }
 }

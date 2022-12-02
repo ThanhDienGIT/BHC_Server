@@ -10,6 +10,7 @@ namespace BHC_Server.Models
         public int? IddatLichNhanVienCoSo { get; set; }
         public int? TrangThaiTaoLich { get; set; }
         public DateTime? NgayGioDatLich { get; set; }
+        public double? GiaKham { get; set; }
         public string? LyDoKham { get; set; }
 
         public virtual DatLichNhanVienCoSo? IddatLichNhanVienCoSoNavigation { get; set; }

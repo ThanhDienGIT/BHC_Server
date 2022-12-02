@@ -16,6 +16,9 @@ namespace BHC_Server.Models
         public string EmailNhanvien { get; set; } = null!;
         public string SdtnhanVien { get; set; } = null!;
         public DateTime NgaySinh { get; set; }
+        public string? AnhNhanVien { get; set; }
+        public string? Cccd { get; set; }
+        public string AnhChungChiHanhNgheNhanVien { get; set; } = null!;
         public string DiaChi { get; set; } = null!;
         public int? ChucVu { get; set; }
         public string TaiKhoan { get; set; } = null!;

@@ -153,9 +153,14 @@ namespace BHC_Server.Controllers
                 _context.SaveChanges();
                 return Ok(a.IdxacThucDangKyMoCoSoYte);
             }
-            else
+            if (phongkham != null && dangky.LoaiHinhDangKy == 1 && dacophongkham.Count() > 0)
             {
                 messphongkham = "Đã có phòng khám ";
+            }
+
+            if (phongkham != null && dangky.LoaiHinhDangKy == 1 && dacophongkham.Count() == 0)
+            {
+                messphongkham = "Đã đăng ký phòng khám ";
             }
 
             if (nhathuoc == null && dangky.LoaiHinhDangKy == 2 && daconhathuoc.Count() == 0)
@@ -179,42 +184,51 @@ namespace BHC_Server.Controllers
                 _context.SaveChanges();
                 return Ok("Register Pharma Success");
             }
-            else
+            if (nhathuoc != null && dangky.LoaiHinhDangKy == 2 && daconhathuoc.Count() > 0)
             {
                 messnhathuoc = "Đã có nhà thuốc";
             }
-
-            if (cosoyte == null && dangky.LoaiHinhDangKy == 3 && dacocoso.Count() == 0)
-            {
-                var a = new XacThucDangKyMoCoSoYte
+                if (nhathuoc != null && dangky.LoaiHinhDangKy == 2 && daconhathuoc.Count() == 0)
                 {
-                    TenCoSo = dangky.TenCoSo,
-                    IdnguoiDung = dangky.IdnguoiDung,
-                    LoaiHinhDangKy = dangky.LoaiHinhDangKy,
-                    AnhBangCap = dangky.AnhBangCap,
-                    AnhCccdmatSau = dangky.AnhCccdmatSau,
-                    AnhCccdmatTruoc = dangky.AnhCccdmatTruoc,
-                    DiaChi = dangky.DiaChi,
-                    XaPhuong = dangky.XaPhuong,
-                    LoaiCoSo = dangky.IdLoaiCoSoYTe,
-                    AnhGiayChungNhanKinhDoanh = dangky.AnhGiayChungNhanKinhDoanh,
-                    AnhDangKyAnhBacSi = dangky.AnhDangKyAnhBacSi,
-                    AnhChungChiHanhNghe = dangky.AnhChungChiHanhNghe,
-                    AnhCoSo = dangky.AnhCoSo,
-                };
-                _context.XacThucDangKyMoCoSoYtes.Add(a);
-                _context.SaveChanges();
-                return Ok("Register Facitilies Success");
-            }
-            else
-            {
-                messcosoyte = "Đã có cơ sở y tế ";
-            }
-            mess += messcosoyte + messnhathuoc + messphongkham;
+                    messnhathuoc = "Đã đăng ký nhà thuốc";
+                }
 
-            return Ok(mess);
-        }
+                if (cosoyte == null && dangky.LoaiHinhDangKy == 3 && dacocoso.Count() == 0)
+                {
+                    var a = new XacThucDangKyMoCoSoYte
+                    {
+                        TenCoSo = dangky.TenCoSo,
+                        IdnguoiDung = dangky.IdnguoiDung,
+                        LoaiHinhDangKy = dangky.LoaiHinhDangKy,
+                        AnhBangCap = dangky.AnhBangCap,
+                        AnhCccdmatSau = dangky.AnhCccdmatSau,
+                        AnhCccdmatTruoc = dangky.AnhCccdmatTruoc,
+                        DiaChi = dangky.DiaChi,
+                        XaPhuong = dangky.XaPhuong,
+                        LoaiCoSo = dangky.IdLoaiCoSoYTe,
+                        AnhGiayChungNhanKinhDoanh = dangky.AnhGiayChungNhanKinhDoanh,
+                        AnhDangKyAnhBacSi = dangky.AnhDangKyAnhBacSi,
+                        AnhChungChiHanhNghe = dangky.AnhChungChiHanhNghe,
+                        AnhCoSo = dangky.AnhCoSo,
+                    };
+                    _context.XacThucDangKyMoCoSoYtes.Add(a);
+                    _context.SaveChanges();
+                    return Ok("Register Facitilies Success");
+                }
+                if (cosoyte != null && dangky.LoaiHinhDangKy == 3 && dacocoso.Count() > 0)
+                {
+                    messcosoyte = "Đã có cơ sở y tế ";
+                }
+                if (cosoyte != null && dangky.LoaiHinhDangKy == 3 && dacocoso.Count() == 0)
+                {
+                    messcosoyte = "Đã đăng ký cơ sở y tế ";
+                }
 
+                mess += messcosoyte + messnhathuoc + messphongkham;
+
+                return BadRequest(mess);
+            }
+        
 
         [HttpPost("dangkychuyenkhoa/{idxacthuc}")]
         public IActionResult dangkychuyenkhoa(int idxacthuc, List<CacChuyenKhoaChuyenMonDangKy> chuyenkhoa)
@@ -318,19 +332,27 @@ namespace BHC_Server.Controllers
         [HttpPut("HuyXacThuc/{idxacthuc}")]
         public IActionResult HuyXacThuc(int idxacthuc)
         {
-            var dangkychuyemon = _context.CacChuyenKhoaChuyenMonDangKies.Where(x => x.Idxacthucdatlich == idxacthuc);
+            var dangkychuyenmon = _context.CacChuyenKhoaChuyenMonDangKies.Where(x => x.Idxacthucdatlich == idxacthuc);
             var xacthuc = _context.XacThucDangKyMoCoSoYtes.FirstOrDefault(x => x.IdxacThucDangKyMoCoSoYte == idxacthuc);
 
-            if (dangkychuyemon.Count() > 0 && xacthuc != null)
+            if(xacthuc != null)
             {
-                _context.CacChuyenKhoaChuyenMonDangKies.RemoveRange(dangkychuyemon);
-                _context.XacThucDangKyMoCoSoYtes.Remove(xacthuc);
-                _context.SaveChanges();
-                return Ok("Success");
+                if(dangkychuyenmon != null)
+                {
+                    _context.CacChuyenKhoaChuyenMonDangKies.RemoveRange(dangkychuyenmon);
+                    _context.XacThucDangKyMoCoSoYtes.Remove(xacthuc);
+                    _context.SaveChanges();
+                    return Ok("Xóa phòng khám thành công");
+                }
+                else
+                {
+                    _context.XacThucDangKyMoCoSoYtes.Remove(xacthuc);
+                    return Ok("Xóa cơ sở y tế thành công");
+                }
             }
             else
             {
-                return BadRequest("Failed");
+                return BadRequest("Không tồn tại xác thực này");
             }
 
         }
@@ -605,6 +627,87 @@ namespace BHC_Server.Controllers
                     return Ok(IDCoSo);
                 }
 
+                if (Xacthuccoso.LoaiHinhDangKy == 2)
+                {
+                    var NhaThuoc = new NhaThuoc
+                    {
+                        IdNhaThuoc = IDCoSo,
+                        IdnguoiDung = Xacthuccoso.IdnguoiDung,
+                        DiaChi = Xacthuccoso.DiaChi,
+                        TenNhaThuoc = Xacthuccoso.TenCoSo.ToUpper(),
+                        Anhnhathuoc = Xacthuccoso.AnhCoSo,
+                        IdxaPhuong = Convert.ToInt32(Xacthuccoso.XaPhuong),
+                    };
+                    var Nhanvien = new NhanVienNhaThuoc
+                    {
+                        
+                        IdnhanVienNhaThuoc = IDNhanVienCoSo,
+                        IdNhaThuoc = IDCoSo,
+                        HoTenNhanVien = NguoiDung.HoNguoiDung + " " + NguoiDung.TenNguoiDung,
+                        Cccd = NguoiDung.Cccd,
+                        SdtnhanVien = NguoiDung.SoDienThoai,
+                        EmailNhanvien = NguoiDung.Email,
+                        ChucVu = 2,
+                        DiaChi = NguoiDung.Diachi,
+                        TaiKhoan = ramdom.GetPassword(),
+                        MatKhau = ramdom.GetPassword(),
+                        AnhNhanVien = Xacthuccoso.AnhDangKyAnhBacSi,
+                        AnhChungChiHanhNgheNhanVien = Xacthuccoso.AnhChungChiHanhNghe,
+                    };
+                    string path = "D:\\Build project\\Server\\BHC-Server\\BHC-Server\\Img\\XacThucImg\\";
+                    string path2 = "D:\\Build project\\Server\\BHC-Server\\BHC-Server\\Img\\CoSoYTeImg\\";
+                    var anhdelete1 = path + XacThuc.AnhBangCap;
+                    var anhdelete2 = path + XacThuc.AnhChungChiHanhNghe;
+                    var anhdelete3 = path + XacThuc.AnhDangKyAnhBacSi;
+                    var anhdelete4 = path + XacThuc.AnhGiayChungNhanKinhDoanh;
+                    var anhdelete5 = path + XacThuc.AnhCoSo;
+                    var anhdelete6 = path + XacThuc.AnhCccdmatSau;
+                    var anhdelete7 = path + XacThuc.AnhCccdmatTruoc;
+                    var anhcreate1 = path2 + XacThuc.AnhBangCap;
+                    var anhcreate2 = path2 + XacThuc.AnhChungChiHanhNghe;
+                    var anhcreate3 = path2 + XacThuc.AnhDangKyAnhBacSi;
+                    var anhcreate4 = path2 + XacThuc.AnhGiayChungNhanKinhDoanh;
+                    var anhcreate5 = path2 + XacThuc.AnhCoSo;
+                    var anhcreate6 = path2 + XacThuc.AnhCccdmatSau;
+                    var anhcreate7 = path2 + XacThuc.AnhCccdmatTruoc;
+
+                    if (System.IO.File.Exists(anhcreate1) == false)
+                    {
+                        System.IO.File.Copy(anhdelete1, anhcreate1);
+                    }
+                    if (System.IO.File.Exists(anhcreate2) == false)
+                    {
+                        System.IO.File.Copy(anhdelete2, anhcreate2);
+                    }
+                    if (System.IO.File.Exists(anhcreate3) == false)
+                    {
+                        System.IO.File.Copy(anhdelete3, anhcreate3);
+                    }
+                    if (System.IO.File.Exists(anhcreate4) == false)
+                    {
+                        System.IO.File.Copy(anhdelete4, anhcreate4);
+                    }
+                    if (System.IO.File.Exists(anhcreate5) == false)
+                    {
+                        System.IO.File.Copy(anhdelete5, anhcreate5);
+                    }
+                    if (System.IO.File.Exists(anhcreate6) == false)
+                    {
+                        System.IO.File.Copy(anhdelete6, anhcreate6);
+                    }
+                    if (System.IO.File.Exists(anhcreate7) == false)
+                    {
+                        System.IO.File.Copy(anhdelete7, anhcreate7);
+                    }
+                    _context.NhaThuocs.Add(NhaThuoc);
+                    _context.NhanVienNhaThuocs.Add(Nhanvien);
+                    NguoiDung.TrangThaiNhaThuoc = true;
+                    _context.SaveChanges();
+                    return Ok(IDCoSo);
+                }
+
+
+
                 if (Xacthuccoso.LoaiHinhDangKy == 3)
                 {
                     var Coso = new CoSoDichVuKhac
@@ -692,82 +795,7 @@ namespace BHC_Server.Controllers
                     return Ok(IDCoSo);
                 }
 
-                if (Xacthuccoso.LoaiHinhDangKy == 2)
-                {
-                    var NhaThuoc2 = new NhaThuoc
-                    {
-                        IdNhaThuoc = IDCoSo,
-                        TenNhaThuoc = Xacthuccoso.TenCoSo,
-                        IdnguoiDung = NguoiDung.IdNguoiDung,
-                        IdxaPhuong = Xacthuccoso.XaPhuong,
-                        DiaChi = Xacthuccoso.DiaChi,
-                        IdLoaiHinhDichVu = Xacthuccoso.LoaiHinhDangKy,
-                    };
-                    var NhanVienNhaThuoc2 = new NhanVienNhaThuoc
-                    {
-                        IdnhanVienNhaThuoc = IDNhanVienCoSo,
-                        HoTenNhanVien = NguoiDung.TenNguoiDung,
-                        IdNhaThuoc = IDCoSo,
-                        EmailNhanvien = NguoiDung.Email,
-                        SdtnhanVien = NguoiDung.SoDienThoai,
-                        NgaySinh = Convert.ToDateTime(NguoiDung.NgaySinh),
-                        DiaChi = NguoiDung.Diachi,
-                        ChucVu = 2,
-                        TaiKhoan = ramdom.GetPassword(),
-                        MatKhau = ramdom.GetPassword(),
-                    };
-                    NguoiDung.TrangThaiNhaThuoc = true;
-                    string path = "D:\\Build project\\Server\\BHC-Server\\BHC-Server\\Img\\XacThucImg\\";
-                    string path2 = "D:\\Build project\\Server\\BHC-Server\\BHC-Server\\Img\\CoSoYTeImg\\";
-                    var anhdelete1 = path + XacThuc.AnhBangCap;
-                    var anhdelete2 = path + XacThuc.AnhChungChiHanhNghe;
-                    var anhdelete3 = path + XacThuc.AnhDangKyAnhBacSi;
-                    var anhdelete4 = path + XacThuc.AnhGiayChungNhanKinhDoanh;
-                    var anhdelete5 = path + XacThuc.AnhCoSo;
-                    var anhdelete6 = path + XacThuc.AnhCccdmatSau;
-                    var anhdelete7 = path + XacThuc.AnhCccdmatTruoc;
-                    var anhcreate1 = path2 + XacThuc.AnhBangCap;
-                    var anhcreate2 = path2 + XacThuc.AnhChungChiHanhNghe;
-                    var anhcreate3 = path2 + XacThuc.AnhDangKyAnhBacSi;
-                    var anhcreate4 = path2 + XacThuc.AnhGiayChungNhanKinhDoanh;
-                    var anhcreate5 = path2 + XacThuc.AnhCoSo;
-                    var anhcreate6 = path2 + XacThuc.AnhCccdmatSau;
-                    var anhcreate7 = path2 + XacThuc.AnhCccdmatTruoc;
-
-                    if (System.IO.File.Exists(anhcreate1) == false)
-                    {
-                        System.IO.File.Copy(anhdelete1, anhcreate1);
-                    }
-                    if (System.IO.File.Exists(anhcreate2) == false)
-                    {
-                        System.IO.File.Copy(anhdelete2, anhcreate2);
-                    }
-                    if (System.IO.File.Exists(anhcreate3) == false)
-                    {
-                        System.IO.File.Copy(anhdelete3, anhcreate3);
-                    }
-                    if (System.IO.File.Exists(anhcreate4) == false)
-                    {
-                        System.IO.File.Copy(anhdelete4, anhcreate4);
-                    }
-                    if (System.IO.File.Exists(anhcreate5) == false)
-                    {
-                        System.IO.File.Copy(anhdelete5, anhcreate5);
-                    }
-                    if (System.IO.File.Exists(anhcreate6) == false)
-                    {
-                        System.IO.File.Copy(anhdelete6, anhcreate6);
-                    }
-                    if (System.IO.File.Exists(anhcreate7) == false)
-                    {
-                        System.IO.File.Copy(anhdelete7, anhcreate7);
-                    }
-
-                    _context.NhaThuocs.Add(NhaThuoc2);
-                    _context.NhanVienNhaThuocs.Add(NhanVienNhaThuoc2);
-                    _context.SaveChanges();
-                    return Ok("Success");
-                }
+               
                 return BadRequest("Failed");
             }
         }
