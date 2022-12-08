@@ -5,7 +5,7 @@ namespace BHC_Server.Models
 {
     public partial class LichHen
     {
-        public int? IdLichHen { get; set; } = null;
+        public int? IdLichHen { get; set; }
         public int IdNguoiDungHenLich { get; set; }
         public string GioHen { get; set; } = null!;
         public DateTime NgayHen { get; set; }

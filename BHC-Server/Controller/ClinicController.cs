@@ -1082,13 +1082,13 @@ namespace BHC_Server.Controller
         [HttpGet("CheckTaiKham/{idnguoidung}/{idbacsi}")]
         public IActionResult CheckTaiKham(int idnguoidung, string idbacsi)
         {
-            DateTime a = DateTime.Now;
 
             var check = (from x in _context.NguoiDungs
                          join c in _context.TaoLiches on x.IdNguoiDung equals c.IdnguoiDungDatLich
                          join d in _context.DatLiches on c.IddatLich equals d.IddatLich
                          join z in _context.KeHoachKhams on d.IdkeHoachKham equals z.IdkeHoachKham
-                         where z.IdbacSi == idbacsi && c.IdnguoiDungDatLich == idnguoidung && c.TrangThaiTaoLich == 2 || c.TrangThaiTaoLich == 4
+                         where z.IdbacSi == idbacsi && x.IdNguoiDung == idnguoidung && c.TrangThaiTaoLich == 2 ||
+                         z.IdbacSi == idbacsi && x.IdNguoiDung == idnguoidung && c.TrangThaiTaoLich == 4
                          select c).FirstOrDefault();
             if (check == null)
             {

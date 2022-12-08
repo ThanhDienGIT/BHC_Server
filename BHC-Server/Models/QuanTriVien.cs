@@ -10,7 +10,7 @@ namespace BHC_Server.Models
             XacThucDangKyMoCoSoYtes = new HashSet<XacThucDangKyMoCoSoYte>();
         }
 
-        public int IdquanTriVien { get; set; }
+        public int? IdquanTriVien { get; set; }
         public string HoQtv { get; set; } = null!;
         public string TenQtv { get; set; } = null!;
         public bool? TrangThai { get; set; }
@@ -21,10 +21,10 @@ namespace BHC_Server.Models
         public string Email { get; set; } = null!;
         public string DiaChi { get; set; } = null!;
         public string? AnhQtv { get; set; }
-        public string TaiKhoanQtv { get; set; } = null!;
-        public string MatKhau { get; set; } = null!;
+        public string? TaiKhoanQtv { get; set; } = null;
+        public string? MatKhau { get; set; } = null!;
         public bool? Chucvu { get; set; }
 
-        public virtual ICollection<XacThucDangKyMoCoSoYte> XacThucDangKyMoCoSoYtes { get; set; }
+        public virtual ICollection<XacThucDangKyMoCoSoYte>? XacThucDangKyMoCoSoYtes { get; set; }
     }
 }

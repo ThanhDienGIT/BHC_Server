@@ -39,6 +39,18 @@ namespace BHC_Server.Controllers
 
         }
 
+        [HttpGet("Laythongtincanhanbyidadmin/{idadmin}")]
+        public IActionResult Laythongtincanhanbyidadmin(int idadmin)
+        {
+            var info = _context.QuanTriViens.FirstOrDefault(x => x.IdquanTriVien == idadmin);
+            if (info != null)
+            {
+                return Ok(info);
+            }
+            return BadRequest("Quản trị viên không tồn tại");
+        }
+
+
         [HttpGet("LaydanhsachDatHen")]
         public IActionResult LaydanhsachDatHen()
         {
@@ -154,7 +166,7 @@ namespace BHC_Server.Controllers
                 };
                 _context.QuanTriViens.Add(Add);
                 _context.SaveChanges();
-                return Ok("success");
+                return Ok(Add.IdquanTriVien);
             }
             else
             {

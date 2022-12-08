@@ -10,9 +10,7 @@ namespace BHC_Server.Models
             BacSis = new HashSet<BacSi>();
             CoSoDichVuKhacs = new HashSet<CoSoDichVuKhac>();
             DanhGiaCosos = new HashSet<DanhGiaCoso>();
-            DonHangs = new HashSet<DonHang>();
             LichHens = new HashSet<LichHen>();
-            NhaThuocs = new HashSet<NhaThuoc>();
             NhanVienCoSos = new HashSet<NhanVienCoSo>();
             PhongKhams = new HashSet<PhongKham>();
             TaoLichNhanVienCoSos = new HashSet<TaoLichNhanVienCoSo>();
@@ -50,9 +48,7 @@ namespace BHC_Server.Models
         public virtual ICollection<BacSi> BacSis { get; set; }
         public virtual ICollection<CoSoDichVuKhac> CoSoDichVuKhacs { get; set; }
         public virtual ICollection<DanhGiaCoso> DanhGiaCosos { get; set; }
-        public virtual ICollection<DonHang> DonHangs { get; set; }
         public virtual ICollection<LichHen> LichHens { get; set; }
-        public virtual ICollection<NhaThuoc> NhaThuocs { get; set; }
         public virtual ICollection<NhanVienCoSo> NhanVienCoSos { get; set; }
         public virtual ICollection<PhongKham> PhongKhams { get; set; }
         public virtual ICollection<TaoLichNhanVienCoSo> TaoLichNhanVienCoSos { get; set; }

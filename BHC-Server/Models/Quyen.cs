@@ -9,7 +9,6 @@ namespace BHC_Server.Models
         {
             BacSis = new HashSet<BacSi>();
             NhanVienCoSos = new HashSet<NhanVienCoSo>();
-            NhanVienNhaThuocs = new HashSet<NhanVienNhaThuoc>();
         }
 
         public int Idquyen { get; set; }
@@ -17,6 +16,5 @@ namespace BHC_Server.Models
 
         public virtual ICollection<BacSi> BacSis { get; set; }
         public virtual ICollection<NhanVienCoSo> NhanVienCoSos { get; set; }
-        public virtual ICollection<NhanVienNhaThuoc> NhanVienNhaThuocs { get; set; }
     }
 }

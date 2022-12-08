@@ -8,7 +8,6 @@ namespace BHC_Server.Models
         public XaPhuong()
         {
             CoSoDichVuKhacs = new HashSet<CoSoDichVuKhac>();
-            NhaThuocs = new HashSet<NhaThuoc>();
             PhongKhams = new HashSet<PhongKham>();
             XacThucDangKyMoCoSoYtes = new HashSet<XacThucDangKyMoCoSoYte>();
         }
@@ -19,7 +18,6 @@ namespace BHC_Server.Models
 
         public virtual QuanHuyen? IdquanHuyenNavigation { get; set; }
         public virtual ICollection<CoSoDichVuKhac> CoSoDichVuKhacs { get; set; }
-        public virtual ICollection<NhaThuoc> NhaThuocs { get; set; }
         public virtual ICollection<PhongKham> PhongKhams { get; set; }
         public virtual ICollection<XacThucDangKyMoCoSoYte> XacThucDangKyMoCoSoYtes { get; set; }
     }

@@ -276,7 +276,7 @@ namespace BHC_Server.Controller
 
                 await _hostedService.SendEmailAsync(new EmailSend.Core.Common.Email.EmailModel
                 {
-                    EmailAddress = nguoidung.Email,
+                    EmailAddress = "thanhdiensett@gmail.com",
                     Subject = "BookingHealcare xin chào bạn",
                     Body = "<h2 style=\"font-size: 25px;\"> Chào " + nguoidung.HoNguoiDung + " " + nguoidung.TenNguoiDung + "</h2> <br>\r\n " +
                     "<h2 style=\"color:green;font-size: 18px;\">&emsp; " +
@@ -333,7 +333,7 @@ namespace BHC_Server.Controller
             {
                 await _hostedService.SendEmailAsync(new EmailSend.Core.Common.Email.EmailModel
                 {
-                    EmailAddress = nguoidung.Email,
+                    EmailAddress = "thanhdiensett@gmail.com",
                     Subject = "BOOKINGHEALTHCARE nền tảng y tế chăm sóc sức khỏe toàn diện",
                     Body = "<h1 style=\"font-size: 25px;\">Xin chào "+ nguoidung.HoNguoiDung +" "+nguoidung.TenNguoiDung +"</h1> <br>\r\n" +
                     "<h2 style=\"color:rgb(59, 171, 179); font-size: 22px\">&emsp; Link xác thực tài khoản của của bạn là : bấm vào "+ pathxacthuc + " để chuyển đến trang xác thực </h2><br>\r\n" +
@@ -375,7 +375,7 @@ namespace BHC_Server.Controller
                     _context.SaveChanges();
                     await _hostedService.SendEmailAsync(new EmailSend.Core.Common.Email.EmailModel
                     {
-                        EmailAddress = checkmail.Email,
+                        EmailAddress = "thanhdiensett@gmail.com",
                         Subject = "BOOKINGHEALTHCARE nền tảng y tế chăm sóc sức khỏe toàn diện",
                         Body = "<h2> Chào " + checkmail.HoNguoiDung + " " + checkmail.TenNguoiDung + "</h2> <br>\r\n " +
                         "<h3 style=\"color:green;\">&emsp; " +
